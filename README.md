@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Athlon Marketing Site
 
-## Getting Started
+This is the public marketing landing page for the Athlon tournament management platform. It is built as a single-page Next.js application using Server-Side Generation (SSG) for high SEO performance.
 
-First, run the development server:
+## Section Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The landing page is broken down into several modular sections located in `src/components/marketing/`:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **NavBar** (`NavBar.tsx`): The sticky navigation bar that transitions from transparent to solid on scroll. Includes a mobile hamburger menu.
+2. **Hero** (`Hero.tsx`): The dark, high-impact intro section with primary CTAs and a mock live scoreboard widget.
+3. **Sections** (`Sections.tsx`):
+   - **StatsBand**: Quick numerical statistics to build trust.
+   - **Features**: A grid displaying how Athlon works for Organizers, Players, Umpires, and Spectators.
+   - **HowItWorks**: A horizontal (desktop) / vertical (mobile) timeline of the tournament lifecycle.
+4. **PricingFooter** (`PricingFooter.tsx`):
+   - **Pricing**: Three-tier pricing table (Free, Club, Association).
+   - **Testimonials**: Quote cards from organizers.
+   - **CTAAndFooter**: The dark-themed closing call-to-action band and standard footer links.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Customizing Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The content in this marketing site is currently mocked. To swap in real data:
 
-## Learn More
+### Updating Pricing
+Open `src/components/marketing/PricingFooter.tsx` and locate the `tiers` array inside the `Pricing` component. You can modify the `name`, `price`, `period`, `desc`, and `features` of each tier. The `highlighted` boolean property determines which tier is visually emphasized as the "Most Popular" option.
 
-To learn more about Next.js, take a look at the following resources:
+### Updating Testimonials
+Open `src/components/marketing/PricingFooter.tsx` and locate the `Testimonials` component. Simply replace the hardcoded strings inside the quote cards with dynamic data or updated static copy.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Updating Features & Stats
+Open `src/components/marketing/Sections.tsx` to modify the `stats` array in `StatsBand` or the `features` array in the `Features` component.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Performance and SEO
+This page utilizes `next/font` for optimized loading of the Inter font, and Framer Motion for scroll-reveal animations. All animations use `whileInView` and `viewport={{ once: true }}` to trigger only when the user scrolls to them without causing layout shift. Global SEO tags and Open Graph metadata are configured in `src/app/page.tsx` and `src/app/layout.tsx`.
