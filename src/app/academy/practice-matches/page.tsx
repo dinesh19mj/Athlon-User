@@ -174,7 +174,7 @@ export default function PracticeMatchesPage() {
         onCancel={() => setIsModalVisible(false)}
         footer={null}
         styles={{
-          content: { backgroundColor: '#1C2742' },
+          body: { backgroundColor: '#1C2742' },
           header: { backgroundColor: '#1C2742', borderBottom: '1px solid rgba(255,255,255,0.1)' }
         }}
       >

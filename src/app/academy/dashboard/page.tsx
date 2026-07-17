@@ -61,7 +61,7 @@ export default function AcademyDashboard() {
               value={155}
               suffix="/ 180"
               prefix={<TeamOutlined className="text-primary mr-2" />}
-              styles={{ content: { color: '#19C37D' } }}
+              valueStyle={{ color: '#19C37D' }}
             />
             <div className="mt-2 text-xs text-gray-400">
               <ArrowUpOutlined className="text-success mr-1" />

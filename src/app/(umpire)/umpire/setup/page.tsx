@@ -25,7 +25,7 @@ export default function MatchSetupPage() {
 
   const [category, setCategory] = useState<GameCategory>('Doubles');
   const [sets, setSets] = useState<1 | 2 | 3>(3);
-  const [pointBreak, setPointBreak] = useState<PointBreak>(15);
+  const [pointBreak, setPointBreak] = useState<number>(15);
   
   // Toggles (UI only for now as requested, but we'll store state)
   const [useDeuce, setUseDeuce] = useState(true);
@@ -187,7 +187,7 @@ export default function MatchSetupPage() {
                   <div className="relative">
                     <select 
                       value={pointBreak}
-                      onChange={(e) => setPointBreak(Number(e.target.value) as PointBreak)}
+                      onChange={(e) => setPointBreak(Number(e.target.value))}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer bg-background text-white"
                       style={{ colorScheme: 'dark' }}
                     >
