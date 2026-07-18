@@ -1,88 +1,148 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Activity, Users, PlusCircle, CalendarDays, DollarSign } from 'lucide-react';
+import { Activity, Trophy, LayoutDashboard, List, ArrowRight, Building2, PlusCircle } from 'lucide-react';
+import { useAuthStore } from '@/lib/store/useAuthStore';
 
-const stats = [
-  { name: 'Active Tournaments', value: '2', icon: Activity, color: 'text-(--primary)' },
-  { name: 'Total Registrations', value: '145', icon: Users, color: 'text-(--info)' },
-  { name: 'Matches Today', value: '12', icon: CalendarDays, color: 'text-(--live)' },
-  { name: 'Revenue', value: '$4,200', icon: DollarSign, color: 'text-(--success)' },
+const quickActions = [
+  { id: 'organizer/tournaments', label: 'Tournaments', icon: Trophy, color: 'text-[#1B9C56]' },
+  { id: 'organizer/live-matches', label: 'Live Matches', icon: Activity, color: 'text-red-500' },
+  { id: 'organizer/dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-blue-400' },
+  { id: 'organizer/results', label: 'Results', icon: List, color: 'text-purple-400' },
+];
+
+const bgImages = [
+  'https://images.unsplash.com/photo-1611252758110-6c9f2868853b?q=80&w=800&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=800&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=800&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1526685834827-2b0e6df23145?q=80&w=800&auto=format&fit=crop'
 ];
 
 export default function OrganizerDashboardPage() {
+  const [currentBg, setCurrentBg] = useState(0);
+  const { userEmail } = useAuthStore();
+  
+  // Extract a friendly name from email if available (e.g. dinesh@... -> Dinesh)
+  const displayName = userEmail 
+    ? userEmail.split('@')[0].charAt(0).toUpperCase() + userEmail.split('@')[0].slice(1) 
+    : 'Organizer';
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBg((prev) => (prev + 1) % bgImages.length);
+    }, 4000); // Change image every 4 seconds
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="p-4 md:p-8">
-      <header className="mb-8 mt-4 md:mt-0 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold mb-1">Organizer Dashboard</h1>
-          <p className="text-(--text-muted)">Manage your tournaments and matches.</p>
-        </div>
-        <button className="bg-(--primary) text-black font-bold py-2 px-6 rounded-(--radius-pill) flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
-          <PlusCircle className="w-5 h-5" /> Create Tournament
-        </button>
+    <div className="h-[calc(100vh-156px)] md:h-[calc(100vh-64px)] bg-[#0A0F1A] text-white font-sans p-4 md:p-8 overflow-hidden flex flex-col">
+      
+      {/* Header Area (App Style) */}
+      <header className="mb-6 mt-2 flex items-center justify-between">
+        <h1 className="text-xl font-black tracking-wide">
+          Hi, {displayName} <span className="inline-block origin-bottom-right animate-[wave_2s_ease-in-out_infinite]">👋</span>
+        </h1>
       </header>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        {stats.map((stat) => (
-          <div key={stat.name} className="bg-(--surface) border border-(--border) p-4 rounded-(--radius-card)">
-            <div className="flex items-center gap-3 mb-2">
-              <stat.icon className={`w-5 h-5 ${stat.color}`} />
-              <h3 className="text-sm font-semibold text-(--text-muted)">{stat.name}</h3>
+      {/* Hero Banner Carousel (From Home Page) */}
+      <section className="relative w-full min-h-[220px] rounded-[24px] overflow-hidden bg-[#0A0F1A] border border-white/10 shadow-[0_10px_40px_rgba(0,136,255,0.15)] mb-8">
+        
+        {/* Animated Background Images */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#0A0F1A]">
+          {/* Base dark gradient to ensure text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001122] via-[#001122]/90 to-[#001122]/40 z-10" />
+
+          {bgImages.map((src, idx) => (
+            <div 
+              key={src}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                idx === currentBg ? 'opacity-50' : 'opacity-0'
+              }`}
+            >
+              <img 
+                src={src} 
+                alt="Badminton" 
+                className="w-full h-full object-cover mix-blend-screen scale-105 animate-[slow-pan_20s_ease-in-out_infinite_alternate]" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0A0F1A]" />
             </div>
-            <p className="text-3xl font-bold">{stat.value}</p>
+          ))}
+        </div>
+
+        <div className="relative z-10 p-6 flex flex-col justify-center h-full w-full">
+          <h1 className="text-[22px] sm:text-[24px] font-black leading-tight tracking-wide uppercase drop-shadow-lg">
+            <span className="text-white">Host Events</span><br />
+            <span className="text-[#1B9C56]">Build Champions</span>
+          </h1>
+          <p className="text-[11px] sm:text-xs text-white/80 mt-2 mb-5 max-w-[260px] leading-relaxed drop-shadow-md">
+            Create Tournaments & Broadcast Live Scores<br />Everything you need to manage in one place!
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/organizer/tournaments" className="flex items-center justify-center gap-1.5 bg-[#1B9C56] text-[#0A0F1A] text-[10px] sm:text-[11px] font-black px-4 py-2.5 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,255,102,0.3)]">
+              NEW TOURNAMENT <PlusCircle className="w-3.5 h-3.5" />
+            </Link>
+            <Link href="/organizer/dashboard" className="flex items-center justify-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-[11px] font-bold px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">
+              <LayoutDashboard className="w-3.5 h-3.5 text-[#1B9C56]" /> VIEW ANALYTICS
+            </Link>
           </div>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+          {bgImages.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentBg(idx)}
+              className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                idx === currentBg ? 'bg-[#1B9C56]' : 'bg-white/30 hover:bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* Quick Actions (Horizontal Scroll) */}
+      <section className="flex items-center gap-4 overflow-x-auto pb-6 pt-1 snap-x hide-scrollbar -mx-4 md:mx-0">
+        <div className="w-4 shrink-0 md:hidden"></div>
+        {quickActions.map((action) => (
+          <Link href={`/${action.id}`} key={action.id} className="flex flex-col items-center gap-2 shrink-0 snap-start">
+            <div className="w-[80px] h-[80px] rounded-[20px] bg-[#121824] border border-white/5 hover:border-white/20 flex flex-col items-center justify-center gap-2 transition-colors shadow-lg cursor-pointer">
+              <action.icon className={`w-7 h-7 ${action.color}`} strokeWidth={1.5} />
+            </div>
+            <span className="text-[11px] font-medium text-white/80">{action.label}</span>
+          </Link>
         ))}
-      </div>
+        <div className="w-4 shrink-0 md:hidden"></div>
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <section>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Live Action</h2>
-            <Link href="/organizer/live-matches" className="text-(--info) text-sm font-semibold hover:underline">
-              View Board
-            </Link>
-          </div>
-          <div className="bg-(--surface) border border-(--border) p-6 rounded-(--radius-card) flex flex-col items-center justify-center text-center min-h-[200px]">
-            <Activity className="w-12 h-12 text-(--live) mb-4" />
-            <h3 className="font-bold text-lg mb-1">3 Matches Live</h3>
-            <p className="text-(--text-muted) text-sm mb-4">Keep track of ongoing scores across all courts.</p>
-            <Link href="/organizer/live-matches" className="bg-(--surface-elevated) hover:bg-(--border) transition-colors px-4 py-2 rounded-(--radius-pill) text-sm font-semibold">
-              Go to Live Matches
-            </Link>
-          </div>
-        </section>
 
-        <section>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Recent Registrations</h2>
-            <Link href="/organizer/registrations" className="text-(--info) text-sm font-semibold hover:underline">
-              View All
-            </Link>
-          </div>
-          <div className="bg-(--surface) border border-(--border) rounded-(--radius-card) overflow-hidden">
-            <div className="divide-y divide-(--border)">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="p-4 flex items-center justify-between hover:bg-(--surface-elevated) transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-(--bg) flex items-center justify-center font-bold text-(--primary)">
-                      {`P${i}`}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-sm">Player {i}</h4>
-                      <p className="text-xs text-(--text-muted)">Summer Slam • Men's Singles</p>
-                    </div>
-                  </div>
-                  <span className="px-2 py-1 bg-(--success)/10 text-(--success) text-[10px] uppercase font-bold rounded-full">
-                    Paid
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </div>
+
+      {/* Global Style overrides */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        @keyframes slow-pan {
+          0% { transform: scale(1.05) translate(0, 0); }
+          100% { transform: scale(1.15) translate(-2%, 2%); }
+        }
+        @keyframes wave {
+          0% { transform: rotate(0.0deg) }
+          10% { transform: rotate(14.0deg) }  /* The following five values can be played with to make the waving more or less extreme */
+          20% { transform: rotate(-8.0deg) }
+          30% { transform: rotate(14.0deg) }
+          40% { transform: rotate(-4.0deg) }
+          50% { transform: rotate(10.0deg) }
+          60% { transform: rotate(0.0deg) }  /* Reset for the last half to pause */
+          100% { transform: rotate(0.0deg) }
+        }
+      `}} />
     </div>
   );
 }

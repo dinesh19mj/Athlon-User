@@ -1,75 +1,210 @@
 'use client';
 
 import { useState } from 'react';
-import { Home, Star, DollarSign, MessageCircle } from 'lucide-react';
-import { NavBar } from './NavBar';
-import { Hero } from './Hero';
-import { Features, HowItWorks } from './Sections';
-import { Pricing, CTAAndFooter } from './PricingFooter';
+import {
+  Menu, LogIn, ArrowRight, Building2, Trophy, Building,
+  CalendarDays, BarChart2, Radio, Wallet, ChevronRight,
+  Swords, CalendarCheck, CreditCard, LineChart, Award,
+  Home, User, Plus, Tv, UserCircle
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export function MarketingPageClient() {
   const [activeTab, setActiveTab] = useState('home');
 
-  const mobileTabs = [
-    { id: 'home', label: 'Home', icon: Home },
-    { id: 'features', label: 'Features', icon: Star },
-    { id: 'pricing', label: 'Pricing', icon: DollarSign },
+  const topCategories = [
+    { id: 'tournaments', label: 'Tournaments', icon: Trophy, color: 'text-green-400' },
+    { id: 'academies', label: 'Academies', icon: Building, color: 'text-purple-400' },
+    { id: 'bookings', label: 'Bookings', icon: CalendarDays, color: 'text-orange-400' },
+    { id: 'rankings', label: 'Rankings', icon: BarChart2, color: 'text-blue-400' },
+    { id: 'live-score', label: 'Live Score', icon: Tv, color: 'text-red-400' },
+    { id: 'wallet', label: 'Wallet', icon: Wallet, color: 'text-cyan-400' },
+    { id: 'practice', label: 'Practice Match', icon: Swords, color: 'text-green-400' },
+    { id: 'attendance', label: 'Attendance', icon: CalendarCheck, color: 'text-purple-400' },
+    { id: 'performance', label: 'Performance', icon: LineChart, color: 'text-blue-400' },
+    { id: 'achievements', label: 'Achievements', icon: Award, color: 'text-yellow-400' },
   ];
 
   return (
-    <>
-      {/* Desktop Layout (Hidden on Mobile) */}
-      <div className="hidden md:block">
-        <NavBar />
-        <Hero />
+    <div className="min-h-screen w-full bg-[#0A0F1A] text-white font-sans pb-24 overflow-y-auto selection:bg-[#1B9C56] selection:text-black">
 
-        <Features />
-        <HowItWorks />
-        <Pricing />
-        <CTAAndFooter />
-      </div>
-
-      {/* Mobile Layout (Hidden on Desktop) */}
-      <div className="md:hidden flex flex-col h-screen bg-(--bg) overflow-hidden">
-        <NavBar />
-        
-        {/* Scrollable Content Area */}
-        <div className="flex-1 overflow-y-auto pb-20 pt-20">
-          {activeTab === 'home' && (
-            <div>
-              <Hero />
-            </div>
-          )}
-          {activeTab === 'features' && (
-            <div>
-              <Features />
-              <HowItWorks />
-            </div>
-          )}
-          {activeTab === 'pricing' && (
-            <Pricing />
-          )}
+      {/* 1. Top Navbar */}
+      <header className="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-[#0A0F1A]/90 backdrop-blur-md">
+        <div className="flex items-center gap-2">
+          <Image src="/Athlon-sport.png" alt="Athlon" width={90} height={18} className="object-contain" />
         </div>
 
-        {/* Mobile Bottom Navigation */}
-        <nav className="fixed bottom-0 left-0 right-0 bg-(--surface) border-t border-(--border) flex justify-around p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] z-50">
-          {mobileTabs.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex flex-col items-center p-2 rounded-lg transition-colors min-w-[4rem] ${
-                  isActive ? 'text-(--primary)' : 'text-(--text-muted)'
-                }`}
-              >
-                <tab.icon className="w-6 h-6 mb-1" />
-                <span className="text-[10px] font-medium">{tab.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-    </>
+        <Link href="/login" className="relative p-2 -mr-2 text-[#1B9C56] hover:text-[#1B9C56]/80 transition-colors">
+          <UserCircle className="w-6 h-6" strokeWidth={1.5} />
+        </Link>
+      </header>
+
+      {/* Main Container for Desktop Centering */}
+      <main className="w-full max-w-lg mx-auto px-4 flex flex-col gap-6">
+
+        {/* 2. Hero Banner Carousel */}
+        <section className="relative w-full min-h-[220px] rounded-[24px] overflow-hidden bg-[#0A0F1A] border border-white/10 shadow-[0_10px_40px_rgba(0,136,255,0.15)] mt-2">
+
+          {/* Multiple Badminton Images Collage */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            {/* Base dark gradient to ensure text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#001122] via-[#001122]/90 to-transparent z-10" />
+
+            {/* Image 1: Player */}
+            <div className="absolute top-[-10%] right-[-5%] w-[60%] h-[120%] opacity-50 mix-blend-screen">
+              <img src="https://images.unsplash.com/photo-1611252758110-6c9f2868853b?q=80&w=800&auto=format&fit=crop" alt="Badminton Player" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0A0F1A]" />
+            </div>
+
+            {/* Image 2: Shuttlecock & Racket overlay */}
+            <div className="absolute bottom-[-20%] right-[30%] w-[40%] h-[80%] opacity-40 mix-blend-screen rotate-12 blur-[1px]">
+              <img src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=600&auto=format&fit=crop" alt="Shuttlecock" className="w-full h-full object-cover rounded-full" />
+            </div>
+          </div>
+
+          <div className="relative z-10 p-6 flex flex-col justify-center h-full w-full">
+            <h1 className="text-[22px] sm:text-[24px] font-black leading-tight tracking-wide uppercase drop-shadow-lg">
+              <span className="text-white">Compete Today</span><br />
+              <span className="text-[#1B9C56]">Champion Tomorrow</span>
+            </h1>
+            <p className="text-[11px] sm:text-xs text-white/80 mt-2 mb-5 max-w-[260px] leading-relaxed drop-shadow-md">
+              Tournaments, Academies, Live Scores<br />Everything you need in one place!
+            </p>
+            <div className="flex flex-wrap items-center gap-3">
+              <Link href="/tournaments" className="flex items-center justify-center gap-1.5 bg-[#1B9C56] text-[#0A0F1A] text-[10px] sm:text-[11px] font-black px-4 py-2.5 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,255,102,0.3)]">
+                JOIN TOURNAMENT <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link href="/academies" className="flex items-center justify-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-[11px] font-bold px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">
+                <Building2 className="w-3.5 h-3.5 text-[#1B9C56]" /> FIND ACADEMY
+              </Link>
+            </div>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1B9C56]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+          </div>
+        </section>
+
+        {/* 3. Primary Categories (Horizontal Scroll) */}
+        <section className="flex items-center gap-4 overflow-x-auto pb-6 pt-1 snap-x hide-scrollbar -mx-4">
+          <div className="w-4 shrink-0"></div>
+          {topCategories.map((cat) => (
+            <Link href={`/${cat.id}`} key={cat.id} className="flex flex-col items-center gap-2 shrink-0 snap-start">
+              <div className="w-[80px] h-[80px] rounded-[20px] bg-[#121824] border border-white/5 hover:border-white/20 flex flex-col items-center justify-center gap-2 transition-colors shadow-lg cursor-pointer">
+                <cat.icon className={`w-7 h-7 ${cat.color}`} strokeWidth={1.5} />
+              </div>
+              <span className="text-[11px] font-medium text-white/80">{cat.label}</span>
+            </Link>
+          ))}
+          <div className="w-4 shrink-0"></div>
+        </section>
+
+        {/* 4. Live Match Card */}
+        <section className="bg-[#121824] border border-white/5 rounded-[24px] p-4 shadow-xl">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-red-500 font-bold text-xs tracking-wider">LIVE</span>
+              <span className="text-white font-bold text-xs tracking-wider">MATCH</span>
+            </div>
+            <span className="text-white/50 text-xs">Court 2</span>
+          </div>
+
+          <div className="flex items-center justify-center mb-6">
+            <span className="px-3 py-1 bg-[#0A0F1A] rounded-full text-[10px] font-bold text-white/60 uppercase tracking-widest border border-white/5">
+              Men Singles • Semi Final
+            </span>
+          </div>
+
+          <div className="flex items-center justify-between px-2 mb-6">
+            {/* Player 1 */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-b from-[#1B9C56] to-transparent p-[2px]">
+                <div className="w-full h-full rounded-full bg-[#0A0F1A] border-2 border-transparent overflow-hidden">
+                  <div className="w-full h-full bg-gray-800 flex items-end justify-center"><User className="w-10 h-10 text-gray-500" /></div>
+                </div>
+              </div>
+              <span className="font-bold text-sm tracking-wider uppercase">Arjun</span>
+              <span className="text-4xl font-black text-[#1B9C56] leading-none">21</span>
+            </div>
+
+            {/* VS */}
+            <div className="flex flex-col items-center justify-center gap-2 mt-4">
+              <div className="w-10 h-10 rounded-full bg-[#0A0F1A] border border-white/10 flex items-center justify-center">
+                <span className="text-white/50 font-bold text-sm">VS</span>
+              </div>
+              <span className="px-2 py-0.5 bg-[#0A0F1A] border border-white/5 rounded text-[10px] font-bold text-white/50 uppercase tracking-wider">Game 2</span>
+            </div>
+
+            {/* Player 2 */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-b from-white/20 to-transparent p-[2px]">
+                <div className="w-full h-full rounded-full bg-[#0A0F1A] border-2 border-transparent overflow-hidden">
+                  <div className="w-full h-full bg-gray-800 flex items-end justify-center"><User className="w-10 h-10 text-gray-500" /></div>
+                </div>
+              </div>
+              <span className="font-bold text-sm tracking-wider uppercase">Rahul</span>
+              <span className="text-4xl font-black text-white leading-none">18</span>
+            </div>
+          </div>
+
+          <button className="w-full py-3.5 bg-[#1B9C56] rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+            WATCH LIVE <Tv className="w-4 h-4" />
+          </button>
+        </section>
+
+
+
+
+      </main>
+
+      {/* 7. Floating Bottom Navigation Bar */}
+      <nav className="fixed bottom-0 left-0 right-0 h-20 bg-[#0A0F1A]/95 backdrop-blur-xl border-t border-white/10 z-50 px-6 flex items-center justify-between max-w-lg mx-auto">
+        <Link href="/" className="flex flex-col items-center gap-1 w-16">
+          <Home className="w-6 h-6 text-[#1B9C56]" />
+          <span className="text-[9px] font-bold text-[#1B9C56]">Home</span>
+        </Link>
+
+        <Link href="/tournaments" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <Trophy className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Tournaments</span>
+        </Link>
+
+        {/* Elevated Center + Button */}
+        <div className="relative -top-6 flex items-center justify-center">
+          <Link href="/create" className="w-16 h-16 rounded-full bg-[#1B9C56] text-black shadow-[0_8px_30px_rgba(0,255,102,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-4 border-[#0A0F1A]">
+            <Plus className="w-8 h-8 stroke-[3]" />
+          </Link>
+        </div>
+
+        <Link href="/academies" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <Building className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Academy</span>
+        </Link>
+
+        <Link href="/profile" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <User className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Profile</span>
+        </Link>
+      </nav>
+
+      {/* Global Style overrides for hiding scrollbars but keeping functionality */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}} />
+    </div>
   );
 }

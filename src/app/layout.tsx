@@ -12,6 +12,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Athlon Tournament Portal",
   description: "The tournament experience, elevated.",
+  manifest: "/manifest.json",
 };
 
 export const viewport: Viewport = {

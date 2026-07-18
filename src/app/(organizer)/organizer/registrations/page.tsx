@@ -1,58 +1,78 @@
+'use client';
+
 import React from 'react';
-import { Users, Search, Filter } from 'lucide-react';
+import Link from 'next/link';
+import { Users, Search, Filter, ArrowLeft } from 'lucide-react';
 
 export default function RegistrationsPage() {
   return (
-    <div className="p-4 md:p-8">
-      <header className="mb-8 mt-4 md:mt-0 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold mb-1">Registrations</h1>
-          <p className="text-(--text-muted)">View and manage tournament registrations.</p>
+    <div className="min-h-screen bg-[#0A0F1A] text-white font-sans p-4 md:p-8 pb-32">
+      
+      {/* Header */}
+      <header className="mb-6 mt-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Link href="/organizer" className="p-2 -ml-2 text-white/70 hover:text-white transition-colors">
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
+          <div className="p-2 bg-blue-500/10 rounded-xl border border-blue-500/20">
+            <Users className="w-6 h-6 text-blue-400" />
+          </div>
+          <h1 className="text-xl font-black uppercase tracking-wide">
+            Registrations
+          </h1>
         </div>
         <div className="flex gap-2">
-          <button className="bg-(--surface) border border-(--border) text-(--text) font-semibold py-2 px-4 rounded-(--radius-pill) flex items-center gap-2 hover:bg-(--surface-elevated) transition-colors">
+          <button className="bg-white/5 border border-white/10 text-white font-bold py-2 px-4 rounded-xl flex items-center gap-2 hover:bg-white/10 transition-colors">
             <Filter className="w-4 h-4" /> Filter
           </button>
         </div>
       </header>
 
-      <div className="bg-(--surface) border border-(--border) rounded-(--radius-card) overflow-hidden">
-        <div className="p-4 border-b border-(--border) flex gap-4">
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-(--text-muted)" />
+      {/* Main List Container */}
+      <div className="bg-[#121824] border border-white/5 rounded-3xl overflow-hidden shadow-xl">
+        
+        {/* Search Bar */}
+        <div className="p-4 border-b border-white/5 flex gap-4 bg-[#0A0F1A]/50">
+          <div className="relative flex-1">
+            <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
             <input 
               type="text" 
               placeholder="Search players..." 
-              className="w-full bg-(--bg) border border-(--border) rounded-(--radius-pill) py-2 pl-10 pr-4 focus:outline-none focus:border-(--primary)"
+              className="w-full bg-[#0A0F1A] border border-white/10 rounded-2xl py-3 pl-12 pr-4 focus:outline-none focus:border-[#1B9C56] text-white placeholder-white/30 font-medium transition-colors"
             />
           </div>
         </div>
         
-        <div className="divide-y divide-(--border)">
+        {/* List items */}
+        <div className="divide-y divide-white/5">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="p-4 flex items-center justify-between hover:bg-(--surface-elevated) transition-colors">
+            <div key={i} className="p-4 sm:p-5 flex items-center justify-between hover:bg-white/5 transition-colors group cursor-pointer">
+              
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-(--bg) flex items-center justify-center font-bold text-(--primary)">
+                <div className="w-12 h-12 rounded-2xl bg-[#0A0F1A] border border-white/10 flex items-center justify-center font-black text-[#1B9C56] text-lg group-hover:scale-110 transition-transform">
                   {`P${i}`}
                 </div>
                 <div>
-                  <h4 className="font-semibold text-base">Player {i}</h4>
-                  <p className="text-sm text-(--text-muted)">Summer Slam • Men's Singles</p>
+                  <h4 className="font-bold text-sm tracking-wide">Player {i}</h4>
+                  <p className="text-xs text-white/50 font-medium mt-0.5">Summer Slam • Men's Singles</p>
                 </div>
               </div>
+
               <div className="flex items-center gap-4">
                 <div className="text-right hidden sm:block">
-                  <p className="font-semibold">$50.00</p>
-                  <p className="text-xs text-(--text-muted)">Entry Fee</p>
+                  <p className="font-bold text-sm">$50.00</p>
+                  <p className="text-[10px] text-white/40 uppercase tracking-widest mt-0.5">Entry Fee</p>
                 </div>
-                <span className="px-3 py-1 bg-(--success)/10 text-(--success) text-xs uppercase font-bold rounded-full">
+                <span className="px-3 py-1.5 bg-[#1B9C56]/20 text-[#1B9C56] text-[9px] uppercase font-black rounded-lg border border-[#1B9C56]/30">
                   Paid
                 </span>
               </div>
+              
             </div>
           ))}
         </div>
       </div>
+      
     </div>
   );
 }

@@ -53,10 +53,10 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
 
   if (!config) {
     return (
-      <div className="flex flex-col items-center justify-center h-[100dvh] bg-background text-white p-6 text-center">
+      <div className="flex flex-col items-center justify-center h-[100dvh] bg-[#0A0F1A] text-white p-6 text-center">
         <h1 className="text-3xl font-bold mb-4">No Match Active</h1>
         <p className="text-white/60 mb-8">Please configure a match first.</p>
-        <Link href="/umpire/setup" className="bg-primary text-black font-bold py-3 px-8 rounded-xl hover:opacity-90 active:scale-95 transition-transform">
+        <Link href="/umpire/setup" className="bg-red-500 text-black font-bold py-3 px-8 rounded-xl hover:opacity-90 active:scale-95 transition-transform">
           Setup Match
         </Link>
       </div>
@@ -173,7 +173,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
         onClick={() => {
           if (isZeroZero) store.setInitialServer(team);
         }}
-        className={`flex-1 flex items-center justify-center relative transition-colors ${isActive ? 'border border-primary bg-primary/[0.02]' : 'border border-transparent'} ${isZeroZero ? 'cursor-pointer hover:bg-white/5' : ''}`}
+        className={`flex-1 flex items-center justify-center relative transition-colors ${isActive ? 'border border-red-500 bg-red-500/[0.02]' : 'border border-transparent'} ${isZeroZero ? 'cursor-pointer hover:bg-white/5' : ''}`}
       >
         {playerName ? (
           <div className="flex items-center gap-3 relative z-10">
@@ -188,9 +188,9 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
           <div className={`absolute 
             ${isPortrait ? (isFirstHalf ? 'bottom-4 left-1/2 -translate-x-1/2' : 'top-4 left-1/2 -translate-x-1/2') 
                          : (isFirstHalf ? 'right-4 top-1/2 -translate-y-1/2' : 'left-4 top-1/2 -translate-y-1/2')} 
-            w-8 h-8 rounded-full bg-primary/10 border border-primary/40 flex items-center justify-center z-10`}
+            w-8 h-8 rounded-full bg-red-500/10 border border-red-500/40 flex items-center justify-center z-10`}
           >
-            <div className="w-3.5 h-3.5 rounded-full bg-primary shadow-[0_0_10px_var(--primary)]" />
+            <div className="w-3.5 h-3.5 rounded-full bg-red-500 shadow-[0_0_10px_#ef4444]" />
           </div>
         )}
       </div>
@@ -283,7 +283,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
         {!isSingles && (
           <button 
             onClick={() => store.swapPlayers(team)}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-surface-elevated rounded-xl flex items-center justify-center hover:bg-[#454b57] transition-colors shadow-lg border border-white/5 z-20 text-[#a0a5b1]"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-[#1A2235] rounded-xl flex items-center justify-center hover:bg-[#454b57] transition-colors shadow-lg border border-white/5 z-20 text-[#a0a5b1]"
           >
             <ArrowLeftRight className={`w-5 h-5 ${isPortrait ? 'block' : 'hidden'}`} />
             <ArrowUpDown className={`w-5 h-5 ${!isPortrait ? 'block' : 'hidden'}`} />
@@ -295,13 +295,13 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
 
   const TopBarActions = () => (
     <>
-      <button className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
+      <button className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
         <Cast className="w-5 h-5 text-white/70" />
       </button>
-      <button className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
-        <MessageSquare className="w-5 h-5 text-primary" />
+      <button className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
+        <MessageSquare className="w-5 h-5 text-red-500" />
       </button>
-      <button className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
+      <button className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
         <VolumeX className="w-5 h-5 text-white/70" />
       </button>
     </>
@@ -309,10 +309,10 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
 
   const TopBarRightActions = () => (
     <>
-      <button onClick={store.undoPoint} disabled={store.history.length === 0 || !!matchWinner || currentGame.isGameOver} className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50 shadow-sm">
+      <button onClick={store.undoPoint} disabled={store.history.length === 0 || !!matchWinner || currentGame.isGameOver} className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50 shadow-sm">
         <Undo2 className="w-5 h-5 text-white/70" />
       </button>
-      <button className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors opacity-50 cursor-not-allowed shadow-sm">
+      <button className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors opacity-50 cursor-not-allowed shadow-sm">
         <Redo2 className="w-5 h-5 text-white/70" />
       </button>
       <button 
@@ -320,11 +320,11 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
           if (prev === 'auto') return isWindowPortrait ? 'landscape' : 'portrait';
           return prev === 'portrait' ? 'landscape' : 'portrait';
         })}
-        className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm"
+        className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm"
       >
         <Smartphone className={`w-5 h-5 ${isPortrait ? 'text-white/70' : 'text-white/70 rotate-90'}`} />
       </button>
-      <button onClick={() => router.push('/umpire')} className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
+      <button onClick={() => router.push('/umpire')} className="w-10 h-10 bg-[#121824] rounded-xl flex items-center justify-center hover:bg-white/10 transition-colors shadow-sm">
         <Menu className="w-5 h-5 text-white/70" />
       </button>
     </>
@@ -356,7 +356,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
   };
 
   return (
-    <div className="fixed inset-0 bg-background overflow-hidden">
+    <div className="fixed inset-0 bg-[#0A0F1A] overflow-hidden">
       <div style={containerStyle} className="flex flex-col text-white selection:bg-transparent overflow-hidden">
         
         {/* HEADER AREA */}
@@ -369,12 +369,12 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
 
         {/* CENTER SCOREBOARD PILL */}
         <div className="flex-1 flex flex-col items-center relative">
-          <div className="bg-surface-elevated border border-white/10 text-white/70 text-xs px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md -mb-3 relative z-30">
+          <div className="bg-[#1A2235] border border-white/10 text-white/70 text-xs px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md -mb-3 relative z-30">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             {formatTime(elapsedSeconds)}
           </div>
           
-          <div className={`w-full max-w-[440px] bg-surface rounded-2xl ${!isPortrait ? 'py-1 shadow-lg' : 'p-3 shadow-xl'} border border-white/5 relative overflow-hidden flex flex-col gap-1`}>
+          <div className={`w-full max-w-[440px] bg-[#121824] rounded-2xl ${!isPortrait ? 'py-1 shadow-lg' : 'p-3 shadow-xl'} border border-white/5 relative overflow-hidden flex flex-col gap-1`}>
             <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-b from-[#8B5CF6] to-[#3B82F6] opacity-80" />
             
             <div className={`flex items-center justify-between relative pl-10 pr-4 ${!isPortrait ? 'py-1' : 'py-0'}`}>
@@ -389,7 +389,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
                 <span className="text-[15px] font-medium text-white/90 truncate">{config.teamA.join(' / ')}</span>
               </div>
               <div className="flex items-center gap-4">
-                {isServeA ? <div className="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" /> : <div className="w-2.5 h-2.5" />}
+                {isServeA ? <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" /> : <div className="w-2.5 h-2.5" />}
                 <span className="text-lg font-medium w-6 text-right text-white/80">{currentGame.scoreA}</span>
               </div>
             </div>
@@ -408,14 +408,14 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
                 <span className="text-[15px] font-medium text-white/90 truncate">{config.teamB.join(' / ')}</span>
               </div>
               <div className="flex items-center gap-4">
-                {isServeB ? <div className="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" /> : <div className="w-2.5 h-2.5" />}
+                {isServeB ? <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" /> : <div className="w-2.5 h-2.5" />}
                 <span className="text-lg font-medium w-6 text-right text-white/80">{currentGame.scoreB}</span>
               </div>
             </div>
           </div>
 
-          <div className={`${!isPortrait ? 'absolute top-full mt-1.5 z-50' : 'hidden'} bg-primary text-[#1a1d24] text-[13px] font-semibold px-4 py-1.5 rounded-lg shadow-md whitespace-nowrap`}>
-            <div className="absolute left-8 -top-[6px] w-0 h-0 border-b-[6px] border-b-[var(--primary)] border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent" />
+          <div className={`${!isPortrait ? 'absolute top-full mt-1.5 z-50' : 'hidden'} bg-red-500 text-[#1a1d24] text-[13px] font-semibold px-4 py-1.5 rounded-lg shadow-md whitespace-nowrap`}>
+            <div className="absolute left-8 -top-[6px] w-0 h-0 border-b-[6px] border-b-[#ef4444] border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent" />
             {umpireCall}
           </div>
         </div>
@@ -428,8 +428,8 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
 
       {/* PORTRAIT SPEECH BUBBLE */}
       <div className={`${isPortrait ? 'block' : 'hidden'} px-4 mb-2 relative z-30`}>
-        <div className="bg-primary text-[#1a1d24] text-[13px] font-semibold px-4 py-2 rounded-xl rounded-tl-none relative shadow-md self-start inline-block">
-          <div className="absolute -left-2 top-0 w-0 h-0 border-t-[10px] border-t-[var(--primary)] border-l-[10px] border-l-transparent" />
+        <div className="bg-red-500 text-[#1a1d24] text-[13px] font-semibold px-4 py-2 rounded-xl rounded-tl-none relative shadow-md self-start inline-block">
+          <div className="absolute -left-2 top-0 w-0 h-0 border-t-[10px] border-t-[#ef4444] border-l-[10px] border-l-transparent" />
           {umpireCall}
         </div>
       </div>
@@ -441,14 +441,14 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
         <button 
           onClick={() => handleScore(leftTeam)}
           disabled={currentGame.isGameOver || !!matchWinner}
-          className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-surface flex items-center justify-center hover:bg-surface-elevated active:bg-white/10 transition-colors shadow-lg border border-white/5 disabled:opacity-50 relative overflow-hidden group`}
+          className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-[#121824] flex items-center justify-center hover:bg-[#1A2235] active:bg-white/10 transition-colors shadow-lg border border-white/5 disabled:opacity-50 relative overflow-hidden group`}
         >
           {!isPortrait && <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#3B82F6] shadow-[0_0_20px_4px_rgba(59,130,246,0.5)]" />}
           <span className="text-white/60 font-medium text-lg relative z-10">+1</span>
         </button>
 
         {/* COURT */}
-        <div className={`flex-1 bg-surface border border-white/10 rounded-xl overflow-hidden flex ${isPortrait ? 'flex-col' : 'flex-row'} relative shadow-2xl`}>
+        <div className={`flex-1 bg-[#121824] border border-white/10 rounded-xl overflow-hidden flex ${isPortrait ? 'flex-col' : 'flex-row'} relative shadow-2xl`}>
           
           {/* Left/Top Team Half */}
           {renderTeamHalf(leftTeam, true)}
@@ -459,7 +459,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
              {/* Swap Courts Button (Center) */}
              <button 
                 onClick={store.flipCourts}
-                className={`absolute ${isPortrait ? 'left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2'} w-10 h-10 bg-surface-elevated rounded-xl flex items-center justify-center hover:bg-[#454b57] transition-colors shadow-xl border border-white/10 text-white z-30`}
+                className={`absolute ${isPortrait ? 'left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2'} w-10 h-10 bg-[#1A2235] rounded-xl flex items-center justify-center hover:bg-[#454b57] transition-colors shadow-xl border border-white/10 text-white z-30`}
              >
                 <ArrowUpDown className={`w-5 h-5 ${isPortrait ? 'block' : 'hidden'}`} />
                 <ArrowLeftRight className={`w-5 h-5 ${!isPortrait ? 'block' : 'hidden'}`} />
@@ -467,7 +467,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
 
              {/* Sync/Refresh Button (Right/Bottom) */}
              <button 
-                className={`absolute ${isPortrait ? 'right-4' : 'bottom-4'} w-10 h-10 bg-surface-elevated rounded-xl flex items-center justify-center hover:bg-[#454b57] transition-colors shadow-xl border border-white/10 text-primary z-30`}
+                className={`absolute ${isPortrait ? 'right-4' : 'bottom-4'} w-10 h-10 bg-[#1A2235] rounded-xl flex items-center justify-center hover:bg-[#454b57] transition-colors shadow-xl border border-white/10 text-red-500 z-30`}
              >
                 <RefreshCcw className="w-5 h-5" />
              </button>
@@ -482,7 +482,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
         <button 
           onClick={() => handleScore(rightTeam)}
           disabled={currentGame.isGameOver || !!matchWinner}
-          className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-surface flex items-center justify-center hover:bg-surface-elevated active:bg-white/10 transition-colors shadow-lg border border-white/5 disabled:opacity-50 relative overflow-hidden group`}
+          className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-[#121824] flex items-center justify-center hover:bg-[#1A2235] active:bg-white/10 transition-colors shadow-lg border border-white/5 disabled:opacity-50 relative overflow-hidden group`}
         >
           {!isPortrait && <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-[#3B82F6] shadow-[0_0_20px_4px_rgba(59,130,246,0.5)]" />}
           <span className="text-white/60 font-medium text-lg relative z-10">+1</span>
@@ -498,16 +498,16 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
       {/* Match Over Modals */}
       {(currentGame.isGameOver || matchWinner) && (
         <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 animate-in fade-in duration-300">
-          <div className="bg-surface border border-primary/30 p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl">
+          <div className="bg-[#121824] border border-red-500/30 p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl">
             {matchWinner ? (
               <>
                 <h2 className="text-3xl font-black mb-2 text-white">MATCH OVER</h2>
-                <p className="text-xl font-bold text-primary mb-8">
+                <p className="text-xl font-bold text-red-500 mb-8">
                   {matchWinner === 'A' ? config.teamA.join(' / ') : config.teamB.join(' / ')} Wins!
                 </p>
                 <button
                   onClick={() => router.push('/umpire')}
-                  className="w-full bg-primary text-black font-bold py-4 rounded-xl hover:opacity-90 active:scale-95 transition-transform"
+                  className="w-full bg-red-500 text-black font-bold py-4 rounded-xl hover:opacity-90 active:scale-95 transition-transform"
                 >
                   Return to Dashboard
                 </button>
@@ -527,7 +527,7 @@ export default function UmpireScoringPage({ params }: { params: { matchId: strin
                   </button>
                   <button
                     onClick={store.nextGame}
-                    className="flex-1 bg-primary text-black font-bold py-4 rounded-xl hover:opacity-90 active:scale-95 transition-transform"
+                    className="flex-1 bg-red-500 text-black font-bold py-4 rounded-xl hover:opacity-90 active:scale-95 transition-transform"
                   >
                     Next Set
                   </button>

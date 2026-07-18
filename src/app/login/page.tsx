@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useRouter } from 'next/navigation';
-import { Mail } from 'lucide-react';
+import { Mail, Home, Trophy, Plus, Building, User } from 'lucide-react';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -32,7 +32,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-(--bg) text-(--text)">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-(--bg) text-(--text) pb-20 lg:pb-0 relative">
       {/* Left side: Branding/Visuals (Hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#0A0E17] flex-col justify-between p-12 overflow-hidden border-r border-(--border)">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-(--primary)/20 via-transparent to-transparent opacity-50" />
@@ -60,15 +60,15 @@ export default function LoginPage() {
       </div>
 
       {/* Right side: Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-        <div className="w-full max-w-md">
-          <div className="lg:hidden text-center mb-8">
-            <Link href="/" className="text-3xl font-extrabold tracking-tighter text-(--text)">ATHLON</Link>
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative">
+        <div className="w-full max-w-md relative z-10">
+          {/* Background Watermark for Form Area */}
+          <div className="absolute inset-0 flex items-center justify-center z-[-1] pointer-events-none opacity-[0.03]">
+            <img src="/Athlon-sport.png" alt="Watermark" className="w-full max-w-[300px] object-contain" />
           </div>
           
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold mb-2">Welcome back</h2>
-            <p className="text-(--text-muted)">Enter your email or phone number to sign in to your account.</p>
+          <div className="text-center lg:text-left mb-8">
+             <h2 className="text-4xl font-black text-white tracking-wide">Login</h2>
           </div>
           
           <form onSubmit={handleLogin} className="space-y-5">
@@ -107,7 +107,7 @@ export default function LoginPage() {
             
             <button 
               type="submit"
-              className="w-full bg-(--primary) text-[#173404] font-bold py-4 px-4 rounded-xl hover:opacity-90 active:scale-95 transition-all mt-6 shadow-[0_0_20px_rgba(204,255,0,0.15)]"
+              className="w-full bg-(--primary) text-white font-bold py-4 px-4 rounded-xl hover:opacity-90 active:scale-95 transition-all mt-6 shadow-[0_0_20px_rgba(27,156,86,0.3)]"
             >
               Sign In
             </button>
@@ -121,6 +121,36 @@ export default function LoginPage() {
           </form>
         </div>
       </div>
+
+      {/* Floating Bottom Navigation Bar (Same as Home) */}
+      <nav className="fixed bottom-0 left-0 right-0 h-20 bg-[#0A0F1A]/95 backdrop-blur-xl border-t border-white/10 z-50 px-6 flex items-center justify-between max-w-lg mx-auto">
+        <Link href="/" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <Home className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Home</span>
+        </Link>
+        
+        <Link href="/tournaments" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <Trophy className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Tournaments</span>
+        </Link>
+
+        {/* Elevated Center + Button */}
+        <div className="relative -top-6 flex items-center justify-center">
+          <Link href="/create" className="w-16 h-16 rounded-full bg-[#1B9C56] text-black shadow-[0_8px_30px_rgba(27,156,86,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-4 border-[#0A0F1A]">
+            <Plus className="w-8 h-8 stroke-[3]" />
+          </Link>
+        </div>
+
+        <Link href="/academies" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <Building className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Academy</span>
+        </Link>
+        
+        <Link href="/profile" className="flex flex-col items-center gap-1 w-16 opacity-50 hover:opacity-100 transition-opacity">
+          <User className="w-6 h-6 text-white" />
+          <span className="text-[9px] font-bold text-white">Profile</span>
+        </Link>
+      </nav>
     </div>
   );
 }
