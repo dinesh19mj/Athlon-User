@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Menu, LogIn, ArrowRight, Building2, Trophy, Building,
   CalendarDays, BarChart2, Radio, Wallet, ChevronRight,
@@ -13,6 +13,21 @@ import { motion } from 'framer-motion';
 
 export function MarketingPageClient() {
   const [activeTab, setActiveTab] = useState('home');
+  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+
+  const heroImages = [
+    'https://images.unsplash.com/photo-1611252758110-6c9f2868853b?q=80&w=800&auto=format&fit=crop', // Player smash
+    'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=800&auto=format&fit=crop', // Shuttlecock close
+    'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?q=80&w=800&auto=format&fit=crop', // Court view
+    'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?q=80&w=800&auto=format&fit=crop'  // Action shot
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
 
   const topCategories = [
     { id: 'tournaments', label: 'Tournaments', icon: Trophy, color: 'text-green-400' },
@@ -52,16 +67,17 @@ export function MarketingPageClient() {
             {/* Base dark gradient to ensure text readability */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#001122] via-[#001122]/90 to-transparent z-10" />
 
-            {/* Image 1: Player */}
-            <div className="absolute top-[-10%] right-[-5%] w-[60%] h-[120%] opacity-50 mix-blend-screen">
-              <img src="https://images.unsplash.com/photo-1611252758110-6c9f2868853b?q=80&w=800&auto=format&fit=crop" alt="Badminton Player" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0A0F1A]" />
-            </div>
-
-            {/* Image 2: Shuttlecock & Racket overlay */}
-            <div className="absolute bottom-[-20%] right-[30%] w-[40%] h-[80%] opacity-40 mix-blend-screen rotate-12 blur-[1px]">
-              <img src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?q=80&w=600&auto=format&fit=crop" alt="Shuttlecock" className="w-full h-full object-cover rounded-full" />
-            </div>
+            {/* Image 1: Main background image (Scrolling) */}
+            {heroImages.map((src, index) => (
+              <div 
+                key={src}
+                className="absolute top-[-10%] right-[-5%] w-[60%] h-[120%] mix-blend-screen transition-opacity duration-1000 ease-in-out"
+                style={{ opacity: currentHeroIndex === index ? 0.5 : 0 }}
+              >
+                <img src={src} alt="Hero Background" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0A0F1A]" />
+              </div>
+            ))}
           </div>
 
           <div className="relative z-10 p-6 flex flex-col justify-center h-full w-full">
@@ -84,10 +100,13 @@ export function MarketingPageClient() {
 
           {/* Dots Indicator */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1B9C56]" />
-            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+            {heroImages.map((_, index) => (
+              <span 
+                key={index} 
+                onClick={() => setCurrentHeroIndex(index)}
+                className={`w-1.5 h-1.5 rounded-full cursor-pointer transition-all duration-300 ${currentHeroIndex === index ? 'bg-[#1B9C56] w-3' : 'bg-white/30'}`} 
+              />
+            ))}
           </div>
         </section>
 
