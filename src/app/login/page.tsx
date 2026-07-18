@@ -25,7 +25,7 @@ export default function LoginPage() {
     } else if (lowerIdentifier.includes('umpire')) {
       router.push('/umpire');
     } else if (lowerIdentifier.includes('academy')) {
-      router.push('/academy/dashboard');
+      router.push('/academy');
     } else {
       router.push('/player');
     }
