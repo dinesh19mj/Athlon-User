@@ -28,6 +28,8 @@ export default function LoginPage() {
       router.push('/academy');
     } else if (lowerIdentifier.includes('club')) {
       router.push('/club');
+    } else if (lowerIdentifier.includes('court')) {
+      router.push('/court');
     } else {
       router.push('/player');
     }
