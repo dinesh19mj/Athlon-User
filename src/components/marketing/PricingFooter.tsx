@@ -210,7 +210,7 @@ export function CTAAndFooter() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-12 gap-12 relative z-10">
           <div className="col-span-2 md:col-span-5 pr-8">
             <Link href="/" className="mb-4 block">
-              <Image src="/athlon-logo.png" alt="Athlon Logo" width={120} height={32} className="object-contain w-auto h-auto" />
+              <Image src="/athlon-logo.png" alt="Athlon Logo" width={120} height={32} className="object-contain w-auto h-7" />
             </Link>
             <p className="text-sm font-medium leading-relaxed max-w-xs">The tournament experience, elevated. Beautifully designed for organizers, players, and umpires.</p>
           </div>
