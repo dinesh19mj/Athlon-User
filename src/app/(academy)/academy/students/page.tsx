@@ -18,7 +18,7 @@ export default function StudentsPage() {
             <h1 className="text-2xl font-black text-white uppercase tracking-tight">Students</h1>
             <p className="text-white/50 text-xs font-bold mt-1">Total: 155 Enrolled</p>
           </div>
-          <button className="w-10 h-10 rounded-full bg-[#A855F7] text-white shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+          <button className="w-10 h-10 rounded-full bg-[#F97316] text-white shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
             <Plus className="w-6 h-6" />
           </button>
         </div>

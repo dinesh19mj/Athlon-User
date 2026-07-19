@@ -44,7 +44,7 @@ export default function FeesPage() {
           <div key={tx.id} className="bg-[#121824]/80 backdrop-blur-md border border-white/5 rounded-2xl p-4 shadow-xl flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                <Receipt className="w-4 h-4 text-[#A855F7]" />
+                <Receipt className="w-4 h-4 text-[#F97316]" />
               </div>
               <div>
                 <h3 className="font-bold text-white text-sm">{tx.name}</h3>
@@ -52,7 +52,7 @@ export default function FeesPage() {
               </div>
             </div>
             <div className="flex flex-col items-end gap-1">
-              <span className="font-black text-[#A855F7]">₹{tx.amount}</span>
+              <span className="font-black text-[#F97316]">₹{tx.amount}</span>
               <span className={`text-[8px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full ${
                 tx.status === 'Paid' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
               }`}>

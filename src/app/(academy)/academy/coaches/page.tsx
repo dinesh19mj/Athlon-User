@@ -17,7 +17,7 @@ export default function CoachesPage() {
           <h1 className="text-2xl font-black text-white uppercase tracking-tight">Coaches</h1>
           <p className="text-white/50 text-xs font-bold mt-1">Manage academy coaching staff</p>
         </div>
-        <button className="w-10 h-10 rounded-full bg-[#A855F7] text-white shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+        <button className="w-10 h-10 rounded-full bg-[#F97316] text-white shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
           <Plus className="w-6 h-6" />
         </button>
       </div>
@@ -27,9 +27,9 @@ export default function CoachesPage() {
           <div key={coach.id} className="bg-[#121824]/80 backdrop-blur-md border border-white/5 rounded-2xl p-4 shadow-xl flex flex-col">
             <div className="flex justify-between items-start mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#A855F7] to-purple-900 p-[2px]">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F97316] to-purple-900 p-[2px]">
                   <div className="w-full h-full bg-[#0A0F1A] rounded-full flex items-center justify-center">
-                    <span className="text-[#A855F7] font-bold">{coach.name.charAt(0)}</span>
+                    <span className="text-[#F97316] font-bold">{coach.name.charAt(0)}</span>
                   </div>
                 </div>
                 <div>

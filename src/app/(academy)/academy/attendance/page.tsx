@@ -20,7 +20,7 @@ export default function AttendancePage() {
         </div>
 
         <div className="flex bg-[#121824] border border-white/10 rounded-xl overflow-hidden p-1">
-          <button className="flex-1 bg-[#A855F7]/20 text-[#A855F7] py-2 rounded-lg text-xs font-bold uppercase tracking-wider">Morning A</button>
+          <button className="flex-1 bg-[#F97316]/20 text-[#F97316] py-2 rounded-lg text-xs font-bold uppercase tracking-wider">Morning A</button>
           <button className="flex-1 text-white/50 hover:text-white py-2 text-xs font-bold uppercase tracking-wider transition-colors">Evening B</button>
           <button className="flex-1 text-white/50 hover:text-white py-2 text-xs font-bold uppercase tracking-wider transition-colors">Elite</button>
         </div>
@@ -58,7 +58,7 @@ export default function AttendancePage() {
       </div>
 
       <div className="p-4 border-t border-white/10 bg-[#0A0F1A] shrink-0">
-        <button className="w-full bg-[#A855F7] text-white font-black uppercase tracking-widest py-3.5 rounded-xl text-sm shadow-[0_4px_20px_rgba(168,85,247,0.4)] active:scale-95 transition-transform">
+        <button className="w-full bg-[#F97316] text-white font-black uppercase tracking-widest py-3.5 rounded-xl text-sm shadow-[0_4px_20px_rgba(168,85,247,0.4)] active:scale-95 transition-transform">
           Submit Attendance
         </button>
       </div>

@@ -17,7 +17,7 @@ export default function BatchesPage() {
           <h1 className="text-2xl font-black text-white uppercase tracking-tight">Batches</h1>
           <p className="text-white/50 text-xs font-bold mt-1">Manage training schedules</p>
         </div>
-        <button className="w-10 h-10 rounded-full bg-[#A855F7] text-white shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
+        <button className="w-10 h-10 rounded-full bg-[#F97316] text-white shadow-[0_4px_20px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform">
           <Plus className="w-6 h-6" />
         </button>
       </div>
@@ -33,11 +33,11 @@ export default function BatchesPage() {
             
             <div className="space-y-3 relative z-10">
               <div className="flex items-center gap-3 text-white/70">
-                <Clock className="w-4 h-4 text-[#A855F7]" />
+                <Clock className="w-4 h-4 text-[#F97316]" />
                 <span className="text-xs font-bold uppercase tracking-wider">{batch.time}</span>
               </div>
               <div className="flex items-center gap-3 text-white/70">
-                <Users className="w-4 h-4 text-[#A855F7]" />
+                <Users className="w-4 h-4 text-[#F97316]" />
                 <span className="text-xs font-bold uppercase tracking-wider">{batch.capacity} Students</span>
               </div>
             </div>

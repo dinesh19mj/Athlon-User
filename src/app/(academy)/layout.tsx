@@ -27,7 +27,7 @@ export default function AcademyLayout({ children }: { children: React.ReactNode 
           <Image src="/Athlon-sport.png" alt="Athlon Logo" width={120} height={32} className="mb-4 object-contain" />
           
           <div className="flex flex-col mt-4">
-            <Link href="/profile" className="flex items-center gap-3 text-white/50 hover:text-[#A855F7] transition-colors p-2 -ml-2 rounded-lg hover:bg-white/5">
+            <Link href="/profile" className="flex items-center gap-3 text-white/50 hover:text-[#F97316] transition-colors p-2 -ml-2 rounded-lg hover:bg-white/5">
               <UserCircle className="w-5 h-5" />
               <span className="font-medium text-sm">Academy Profile</span>
             </Link>
@@ -42,7 +42,7 @@ export default function AcademyLayout({ children }: { children: React.ReactNode 
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                   isActive 
-                    ? 'bg-[#A855F7]/10 text-[#A855F7]' 
+                    ? 'bg-[#F97316]/10 text-[#F97316]' 
                     : 'text-white/50 hover:text-white hover:bg-white/5'
                 }`}
               >
@@ -58,7 +58,7 @@ export default function AcademyLayout({ children }: { children: React.ReactNode 
               logout();
               window.location.href = '/';
             }} 
-            className="flex items-center gap-3 text-white/50 hover:text-[#A855F7] transition-colors w-full px-3 py-2"
+            className="flex items-center gap-3 text-white/50 hover:text-[#F97316] transition-colors w-full px-3 py-2"
           >
             <LogOut className="w-5 h-5" />
             <span className="font-medium">Logout</span>
@@ -77,7 +77,7 @@ export default function AcademyLayout({ children }: { children: React.ReactNode 
           <div className="relative">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 -mr-2 text-white hover:text-[#A855F7] transition-colors"
+              className="p-2 -mr-2 text-white hover:text-[#F97316] transition-colors"
             >
               <Menu className="w-6 h-6" strokeWidth={1.5} />
             </button>
@@ -86,7 +86,7 @@ export default function AcademyLayout({ children }: { children: React.ReactNode 
             {isMenuOpen && (
               <div className="absolute right-0 top-12 w-48 bg-[#121824] border border-white/10 rounded-xl shadow-2xl py-2 flex flex-col z-50 animate-in fade-in zoom-in-95 duration-200">
                 <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/5 transition-colors">
-                  <UserCircle className="w-4 h-4 text-[#A855F7]" /> Profile
+                  <UserCircle className="w-4 h-4 text-[#F97316]" /> Profile
                 </Link>
                 <Link href="/settings" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/5 transition-colors">
                   <Settings className="w-4 h-4 text-white/70" /> Settings
@@ -113,30 +113,30 @@ export default function AcademyLayout({ children }: { children: React.ReactNode 
       {/* Mobile Bottom Nav (PWA Style) */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#0A0F1A]/95 backdrop-blur-xl border-t border-white/10 z-50 px-6 flex items-center justify-between">
         <Link href="/academy" className={`flex flex-col items-center gap-1 w-16 transition-opacity ${pathname === '/academy' ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-          <Home className={`w-6 h-6 ${pathname === '/academy' ? 'text-[#A855F7]' : 'text-white'}`} />
-          <span className={`text-[9px] font-bold ${pathname === '/academy' ? 'text-[#A855F7]' : 'text-white'}`}>Home</span>
+          <Home className={`w-6 h-6 ${pathname === '/academy' ? 'text-[#F97316]' : 'text-white'}`} />
+          <span className={`text-[9px] font-bold ${pathname === '/academy' ? 'text-[#F97316]' : 'text-white'}`}>Home</span>
         </Link>
         
         <Link href="/academy/students" className={`flex flex-col items-center gap-1 w-16 transition-opacity ${pathname === '/academy/students' ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-          <Users className={`w-6 h-6 ${pathname === '/academy/students' ? 'text-[#A855F7]' : 'text-white'}`} />
-          <span className={`text-[9px] font-bold ${pathname === '/academy/students' ? 'text-[#A855F7]' : 'text-white'}`}>Students</span>
+          <Users className={`w-6 h-6 ${pathname === '/academy/students' ? 'text-[#F97316]' : 'text-white'}`} />
+          <span className={`text-[9px] font-bold ${pathname === '/academy/students' ? 'text-[#F97316]' : 'text-white'}`}>Students</span>
         </Link>
 
         {/* Elevated Center + Button */}
         <div className="relative -top-6 flex items-center justify-center">
-          <Link href="/academy/attendance" className="w-16 h-16 rounded-full bg-[#A855F7] text-white shadow-[0_8px_30px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-4 border-[#0A0F1A]">
+          <Link href="/academy/attendance" className="w-16 h-16 rounded-full bg-[#F97316] text-white shadow-[0_8px_30px_rgba(168,85,247,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-4 border-[#0A0F1A]">
             <Activity className="w-8 h-8 stroke-[3]" />
           </Link>
         </div>
 
         <Link href="/academy/batches" className={`flex flex-col items-center gap-1 w-16 transition-opacity ${pathname === '/academy/batches' ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-          <BookOpen className={`w-6 h-6 ${pathname === '/academy/batches' ? 'text-[#A855F7]' : 'text-white'}`} />
-          <span className={`text-[9px] font-bold ${pathname === '/academy/batches' ? 'text-[#A855F7]' : 'text-white'}`}>Batches</span>
+          <BookOpen className={`w-6 h-6 ${pathname === '/academy/batches' ? 'text-[#F97316]' : 'text-white'}`} />
+          <span className={`text-[9px] font-bold ${pathname === '/academy/batches' ? 'text-[#F97316]' : 'text-white'}`}>Batches</span>
         </Link>
         
         <Link href="/profile" className={`flex flex-col items-center gap-1 w-16 transition-opacity ${pathname === '/profile' ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
-          <UserCircle className={`w-6 h-6 ${pathname === '/profile' ? 'text-[#A855F7]' : 'text-white'}`} />
-          <span className={`text-[9px] font-bold ${pathname === '/profile' ? 'text-[#A855F7]' : 'text-white'}`}>Profile</span>
+          <UserCircle className={`w-6 h-6 ${pathname === '/profile' ? 'text-[#F97316]' : 'text-white'}`} />
+          <span className={`text-[9px] font-bold ${pathname === '/profile' ? 'text-[#F97316]' : 'text-white'}`}>Profile</span>
         </Link>
       </nav>
     </div>

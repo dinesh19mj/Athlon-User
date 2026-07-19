@@ -72,10 +72,10 @@ export default function AcademyDashboardPage() {
             ))}
           </div>
 
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#A855F7]/10 rounded-full blur-[100px] pointer-events-none z-0" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#F97316]/10 rounded-full blur-[100px] pointer-events-none z-0" />
           
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-4 relative z-10">
-            <span className="w-2 h-2 rounded-full bg-[#A855F7] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#F97316] animate-pulse" />
             <span className="text-[10px] font-bold text-white uppercase tracking-wider">Academy Management</span>
           </div>
 
@@ -92,11 +92,11 @@ export default function AcademyDashboardPage() {
                 <span className="text-xs font-bold text-green-500 mb-1 flex items-center"><TrendingUp className="w-3 h-3" /> 12</span>
               </div>
             </div>
-            <div className="flex-1 bg-[#A855F7]/10 border border-[#A855F7]/30 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-center shadow-lg relative overflow-hidden">
-              <div className="absolute inset-0 bg-[#A855F7]/10 pointer-events-none" />
-              <span className="text-[10px] font-black text-[#A855F7]/80 uppercase tracking-widest mb-1">Revenue</span>
+            <div className="flex-1 bg-[#F97316]/10 border border-[#F97316]/30 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-center shadow-lg relative overflow-hidden">
+              <div className="absolute inset-0 bg-[#F97316]/10 pointer-events-none" />
+              <span className="text-[10px] font-black text-[#F97316]/80 uppercase tracking-widest mb-1">Revenue</span>
               <div className="flex items-end gap-2">
-                <span className="text-2xl font-black text-[#A855F7]">$12.4k</span>
+                <span className="text-2xl font-black text-[#F97316]">$12.4k</span>
                 <span className="text-xs font-bold text-red-500 mb-1 flex items-center"><TrendingDown className="w-3 h-3" /> 4%</span>
               </div>
             </div>
@@ -123,12 +123,12 @@ export default function AcademyDashboardPage() {
             {/* Quick action to add a new batch (spans 4 columns for emphasis if we want, but let's just make it a single box) */}
             <Link 
               href="/academy/batches"
-              className="bg-[#121824]/80 backdrop-blur-md border border-[#A855F7]/30 rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:bg-[#A855F7]/10 transition-all active:scale-95 shadow-xl"
+              className="bg-[#121824]/80 backdrop-blur-md border border-[#F97316]/30 rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:bg-[#F97316]/10 transition-all active:scale-95 shadow-xl"
             >
-              <div className="p-2.5 rounded-full bg-[#A855F7]/20 shadow-inner text-[#A855F7]">
+              <div className="p-2.5 rounded-full bg-[#F97316]/20 shadow-inner text-[#F97316]">
                 <BookOpen className="w-5 h-5" />
               </div>
-              <span className="text-[9px] font-bold text-[#A855F7] uppercase tracking-wider">New Batch</span>
+              <span className="text-[9px] font-bold text-[#F97316] uppercase tracking-wider">New Batch</span>
             </Link>
           </div>
         </div>
@@ -142,7 +142,7 @@ export default function AcademyDashboardPage() {
           <div className="space-y-3">
             {[
               { id: 1, text: 'Coach Vikram started Morning Batch', time: '10 mins ago', color: 'bg-blue-500' },
-              { id: 2, text: 'New player Arjun enrolled', time: '2 hours ago', color: 'bg-[#A855F7]' },
+              { id: 2, text: 'New player Arjun enrolled', time: '2 hours ago', color: 'bg-[#F97316]' },
               { id: 3, text: 'Shuttle stock alert: < 5 barrels', time: '5 hours ago', color: 'bg-red-500' },
             ].map((activity, i) => (
               <div key={activity.id} className="bg-[#121824]/80 backdrop-blur-md border border-white/5 rounded-2xl p-4 shadow-xl flex items-center gap-4">
