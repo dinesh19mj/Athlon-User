@@ -66,7 +66,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md relative z-10">
           {/* Background Watermark for Form Area */}
           <div className="absolute inset-0 flex items-center justify-center z-[-1] pointer-events-none opacity-[0.03]">
-            <img src="/Athlon-sport.png" alt="Watermark" className="w-full max-w-[300px] object-contain" />
+            <img src="/athlon-logo.png" alt="Watermark" className="w-full max-w-[300px] object-contain" />
           </div>
           
           <div className="text-center lg:text-left mb-8">

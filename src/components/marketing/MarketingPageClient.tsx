@@ -48,7 +48,7 @@ export function MarketingPageClient() {
       {/* 1. Top Navbar */}
       <header className="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-[#0A0F1A]/90 backdrop-blur-md">
         <div className="flex items-center gap-2">
-          <Image src="/Athlon-sport.png" alt="Athlon" width={90} height={18} className="object-contain w-auto h-auto" />
+          <Image src="/athlon-logo.png" alt="Athlon" width={90} height={18} className="object-contain w-auto h-auto" />
         </div>
 
         <Link href="/login" className="relative p-2 -mr-2 text-[#1B9C56] hover:text-[#1B9C56]/80 transition-colors">

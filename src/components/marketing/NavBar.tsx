@@ -35,7 +35,7 @@ export function NavBar() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/Athlon-sport.png" alt="Athlon Logo" width={100} height={28} className="object-contain w-auto h-auto" priority />
+            <Image src="/athlon-logo.png" alt="Athlon Logo" width={100} height={28} className="object-contain w-auto h-auto" priority />
           </Link>
 
           {/* Desktop Nav */}
