@@ -23,7 +23,7 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
       {/* Desktop Sidebar */}
       <aside className="w-64 border-r border-(--border) bg-(--surface) flex flex-col hidden md:flex">
         <div className="p-4 border-b border-(--border)">
-          <Image src="/athlon-logo.png" alt="Athlon Logo" width={120} height={32} className="mb-4 object-contain w-auto h-7" />
+          <Image src="/athlon-logo.png" alt="Athlon Logo" width={120} height={32} className="mb-4 object-contain w-auto h-10" />
           
           <div className="flex flex-col mt-4">
             <Link href="/profile" className="flex items-center gap-3 text-(--text-muted) hover:text-[#1B9C56] transition-colors p-2 -ml-2 rounded-lg hover:bg-white/5">
@@ -70,7 +70,7 @@ export default function OrganizerLayout({ children }: { children: React.ReactNod
         {/* Mobile Header (PWA Style - matches Home page) */}
         <header className="md:hidden sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-[#0A0F1A]/90 backdrop-blur-md border-b border-white/10">
           <div className="flex items-center gap-2">
-            <Image src="/athlon-logo.png" alt="Athlon" width={90} height={18} className="object-contain w-auto h-7" />
+            <Image src="/athlon-logo.png" alt="Athlon" width={90} height={18} className="object-contain w-auto h-10" />
           </div>
 
           <div className="relative">
