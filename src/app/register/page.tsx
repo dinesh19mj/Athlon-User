@@ -50,7 +50,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-(--bg) text-(--text)">
+    <div className="min-h-screen flex bg-[#0F172A] text-(--text)">
       {/* Left side: Branding/Visuals (Hidden on mobile) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-[#0A0E17] flex-col justify-between p-12 overflow-hidden border-r border-(--border)">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-(--primary)/20 via-transparent to-transparent opacity-50" />
@@ -220,7 +220,7 @@ export default function RegisterPage() {
             <button 
               type="submit"
               disabled={formData.password !== formData.confirmPassword}
-              className="w-full bg-(--primary) text-[#173404] font-bold py-4 px-4 rounded-xl hover:opacity-90 active:scale-95 transition-all mt-6 shadow-[0_0_20px_rgba(204,255,0,0.15)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#1B9C56] text-foreground font-bold py-4 px-4 rounded-xl hover:opacity-90 active:scale-95 transition-all mt-6 shadow-[0_0_20px_rgba(27,156,86,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Create Account
             </button>
