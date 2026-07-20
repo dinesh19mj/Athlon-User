@@ -36,6 +36,9 @@ export default function DrawsAndBracketsPage({ params }: { params: Promise<{ id:
   const { id } = use(params);
   
   const [isDrawGenerated, setIsDrawGenerated] = useState(false);
+  const [drawSize, setDrawSize] = useState(64);
+  const registrations = 56;
+  const calculatedByes = Math.max(0, drawSize - registrations);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans flex flex-col h-full overflow-hidden">
@@ -86,17 +89,42 @@ export default function DrawsAndBracketsPage({ params }: { params: Promise<{ id:
       {/* Main Content Area */}
       {!isDrawGenerated ? (
         // Empty State: Generate Draw
-        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
-          <div className="w-24 h-24 rounded-full bg-surface border border-foreground/5 flex items-center justify-center mb-6">
+        <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 text-center overflow-y-auto">
+          <div className="w-24 h-24 rounded-full bg-surface border border-foreground/5 flex shrink-0 items-center justify-center mb-6 mt-8 md:mt-0">
             <LayoutGrid className="w-10 h-10 text-foreground/30" />
           </div>
-          <h2 className="text-2xl font-black uppercase tracking-tight mb-2">Draws not generated</h2>
+          <h2 className="text-2xl font-black uppercase tracking-tight mb-2">Generate Draws</h2>
           <p className="text-foreground/50 max-w-md mb-8">
-            Registration has 128 players for Men's Singles. You can now generate the bracket.
+            Configure the bracket size and seeding method to generate the fixtures.
           </p>
           
-          <div className="bg-surface border border-foreground/10 rounded-2xl p-6 text-left w-full max-w-sm shadow-xl mb-8">
-            <div className="mb-4">
+          <div className="bg-surface border border-foreground/10 rounded-2xl p-6 text-left w-full max-w-sm shadow-xl mb-8 space-y-4">
+            
+            <div className="bg-foreground/5 rounded-xl p-4 flex items-center justify-between">
+              <span className="text-xs font-black uppercase tracking-widest text-foreground/60">Total Registrations</span>
+              <span className="text-lg font-black text-[#1B9C56]">{registrations}</span>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-black text-foreground/50 uppercase tracking-widest mb-2">Draw Size</label>
+              <select 
+                className="w-full bg-background border border-foreground/10 rounded-xl py-3 px-4 text-sm font-bold text-foreground focus:outline-none focus:border-[#1B9C56]"
+                value={drawSize}
+                onChange={(e) => setDrawSize(Number(e.target.value))}
+              >
+                <option value="16">16 Teams</option>
+                <option value="32">32 Teams</option>
+                <option value="64">64 Teams</option>
+                <option value="128">128 Teams</option>
+              </select>
+            </div>
+
+            <div className="bg-[#1B9C56]/10 border border-[#1B9C56]/20 rounded-xl p-4 flex items-center justify-between">
+              <span className="text-xs font-black uppercase tracking-widest text-[#1B9C56]">Calculated Byes</span>
+              <span className="text-lg font-black text-[#1B9C56]">{calculatedByes}</span>
+            </div>
+
+            <div>
               <label className="block text-[10px] font-black text-foreground/50 uppercase tracking-widest mb-2">Seeding Method</label>
               <select className="w-full bg-background border border-foreground/10 rounded-xl py-3 px-4 text-sm font-bold text-foreground focus:outline-none focus:border-[#1B9C56]">
                 <option>Random Draw</option>
@@ -104,18 +132,12 @@ export default function DrawsAndBracketsPage({ params }: { params: Promise<{ id:
                 <option>Rank Based</option>
               </select>
             </div>
-            <div>
-              <label className="block text-[10px] font-black text-foreground/50 uppercase tracking-widest mb-2">Include Byes</label>
-              <select className="w-full bg-background border border-foreground/10 rounded-xl py-3 px-4 text-sm font-bold text-foreground focus:outline-none focus:border-[#1B9C56]">
-                <option>Yes, balance bracket automatically</option>
-                <option>No, strict power of 2</option>
-              </select>
-            </div>
+            
           </div>
 
           <button 
             onClick={() => setIsDrawGenerated(true)}
-            className="bg-[#1B9C56] text-black font-black uppercase tracking-wide py-4 px-12 rounded-xl hover:scale-105 active:scale-95 transition-transform shadow-[0_10px_30px_rgba(27,156,86,0.3)]"
+            className="bg-[#1B9C56] text-black font-black uppercase tracking-wide py-4 px-12 rounded-xl hover:scale-105 active:scale-95 transition-transform shadow-[0_10px_30px_rgba(27,156,86,0.3)] shrink-0 mb-8 md:mb-0"
           >
             Generate Bracket
           </button>
