@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Undo2, Redo2, MessageSquare, VolumeX, Cast, Menu, RefreshCcw, ArrowLeftRight, ArrowUpDown, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 
-export default function UmpireScoringPage({ params }: { params: { matchId: string } }) {
+export default function UmpireScoringPage({ params }: { params: Promise<{ matchId: string }> }) {
   const router = useRouter();
   const store = useMatchStore();
 
