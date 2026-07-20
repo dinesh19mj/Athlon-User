@@ -32,7 +32,7 @@ export default function ManageTournamentPage({ params }: { params: Promise<{ id:
   };
 
   const sections = [
-    { title: 'Registrations', icon: <Users className="w-6 h-6" />, desc: 'Manage entries and fees', link: `/organizer/registrations?t=${id}`, color: 'bg-blue-500/10 text-blue-500' },
+    { title: 'Registrations', icon: <Users className="w-6 h-6" />, desc: 'Manage entries and fees', link: `/organizer/tournaments/${id}/registrations`, color: 'bg-blue-500/10 text-blue-500' },
     { title: 'Draws & Brackets', icon: <LayoutGrid className="w-6 h-6" />, desc: 'Generate fixtures', link: `/organizer/tournaments/${id}/draws`, color: 'bg-purple-500/10 text-purple-500' },
     { title: 'Match Schedule', icon: <CalendarDays className="w-6 h-6" />, desc: 'Assign courts & times', link: `/organizer/tournaments/${id}/schedule`, color: 'bg-orange-500/10 text-orange-500' },
     { title: 'Live Results', icon: <Trophy className="w-6 h-6" />, desc: 'Update match winners', link: `/organizer/results?t=${id}`, color: 'bg-[#1B9C56]/10 text-[#1B9C56]' },
