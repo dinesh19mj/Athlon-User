@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export default function ClubMembersPage() {
   const [members, setMembers] = useState([
-    { id: 1, name: 'Arjun Patel', role: 'Captain', joined: 'Jan 2026', phone: '+91 98765 43210', photo: null },
+    { id: 1, name: 'Arjun Patel', role: 'Captain', joined: 'Jan 2026', phone: '+91 98765 43210', photo: null as string | null },
     { id: 2, name: 'Neha Gupta', role: 'Member', joined: 'Feb 2026', phone: '+91 98765 43211', photo: null },
     { id: 3, name: 'Raj Kumar', role: 'Member', joined: 'Mar 2026', phone: '+91 98765 43212', photo: null },
   ]);
