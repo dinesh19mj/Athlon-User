@@ -114,28 +114,7 @@ export default function ClubDashboardPage() {
           </section>
         </div>
 
-        {/* RECENT ACTIVITY */}
-        <div className="px-6 pb-8">
-          <div className="flex items-center justify-between mb-4 pl-1 pr-2">
-            <h2 className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Recent Activity</h2>
-          </div>
-          
-          <div className="space-y-3">
-            {[
-              { id: 1, text: 'Logged daily practice match results', time: '10 mins ago', color: 'bg-blue-500' },
-              { id: 2, text: 'New member Raj joined the club', time: '2 hours ago', color: 'bg-[#06B6D4]' },
-              { id: 3, text: 'Shuttle expense logged: ₹2,400', time: '1 day ago', color: 'bg-red-500' },
-            ].map((activity, i) => (
-              <div key={activity.id} className="bg-surface/80 backdrop-blur-md border border-foreground/5 rounded-2xl p-4 shadow-xl flex items-center gap-4">
-                <div className={`w-2 h-2 rounded-full ${activity.color} shrink-0`} />
-                <div className="flex-1">
-                  <p className="text-xs font-bold text-foreground">{activity.text}</p>
-                </div>
-                <span className="text-[9px] font-bold text-foreground/40 uppercase tracking-widest whitespace-nowrap">{activity.time}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+
       </div>
 
       <style dangerouslySetInnerHTML={{
