@@ -52,7 +52,7 @@ export function MarketingPageClient() {
         </div>
 
         <Link href="/login" className="relative p-2 -mr-2 text-[#1B9C56] hover:text-[#1B9C56]/80 transition-colors">
-          <LogIn className="w-6 h-6" strokeWidth={1.5} />
+          <User className="w-6 h-6" strokeWidth={1.5} />
         </Link>
       </header>
 
