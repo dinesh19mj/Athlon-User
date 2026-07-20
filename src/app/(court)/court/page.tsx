@@ -96,22 +96,18 @@ export default function CourtDashboardPage() {
         </div>
 
         {/* QUICK ACTIONS GRID */}
-        <div className="p-6">
+        <div className="p-6 overflow-hidden">
           <h2 className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-4 pl-1">Court Operations</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <section className="flex items-center gap-3 overflow-x-auto pb-4 pt-1 snap-x scroll-px-6 hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
             {quickActions.map((action) => (
-              <Link 
-                key={action.id}
-                href={action.id}
-                className="bg-[#121824]/80 backdrop-blur-md border border-white/5 rounded-2xl p-3 flex flex-col items-center justify-center gap-2 hover:bg-white/10 hover:border-white/20 transition-all active:scale-95 shadow-xl"
-              >
-                <div className={`p-2.5 rounded-full bg-[#0A0F1A] shadow-inner ${action.color}`}>
-                  <action.icon className="w-5 h-5" />
+              <Link href={action.id} key={action.id} className="flex flex-col items-center gap-1.5 shrink-0 snap-start">
+                <div className="w-[68px] h-[68px] rounded-[16px] bg-[#121824] border border-white/5 hover:border-white/20 flex flex-col items-center justify-center transition-colors shadow-lg cursor-pointer">
+                  <action.icon className={`w-6 h-6 ${action.color.replace('text-', '') === action.color ? action.color.replace('bg-', 'text-') : action.color}`} strokeWidth={1.5} />
                 </div>
-                <span className="text-[9px] font-bold text-white uppercase tracking-wider">{action.label}</span>
+                <span className="text-[10px] font-medium text-white/80">{action.label}</span>
               </Link>
             ))}
-          </div>
+          </section>
         </div>
 
         {/* RECENT ACTIVITY */}
