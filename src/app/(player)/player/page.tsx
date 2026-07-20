@@ -10,7 +10,8 @@ import {
   ChevronRight,
   MapPin,
   Calendar,
-  Star
+  Star,
+  CheckCircle2
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 
@@ -21,10 +22,10 @@ const bgImages = [
 ];
 
 const quickActions = [
-  { id: '/player/tournaments', label: 'Tournaments', icon: Trophy, color: 'text-[#3B82F6]' },
-  { id: '/player/rankings', label: 'Rankings', icon: TrendingUp, color: 'text-blue-400' },
-  { id: '/player/matches', label: 'Matches', icon: Activity, color: 'text-purple-400' },
-  { id: '/player/pro', label: 'Upgrade', icon: Star, color: 'text-yellow-400' },
+  { id: '/player/tournaments', label: 'Tournaments', icon: Trophy, color: 'text-[#1B9C56]' }, // Primary Green
+  { id: '/player/rankings', label: 'Rankings', icon: TrendingUp, color: 'text-orange-400' }, // Orange for Rank
+  { id: '/player/matches', label: 'Matches', icon: Activity, color: 'text-[#3B82F6]' }, // Blue for Action
+  { id: '/player/registered', label: 'Registered', icon: CheckCircle2, color: 'text-purple-400' }, // Purple for Status
 ];
 
 const upcomingMatches = [
