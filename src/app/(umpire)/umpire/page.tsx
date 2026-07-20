@@ -107,17 +107,15 @@ export default function UmpireDashboardPage() {
       </section>
 
       {/* Quick Actions (Horizontal Scroll) */}
-      <section className="flex items-center gap-4 overflow-x-auto pb-6 pt-1 snap-x hide-scrollbar -mx-4 md:mx-0">
-        <div className="w-4 shrink-0 md:hidden"></div>
+      <section className="flex items-center gap-3 overflow-x-auto pb-6 pt-1 snap-x scroll-px-4 hide-scrollbar -mx-4 px-4 md:mx-0">
         {quickActions.map((action) => (
-          <Link href={`/${action.id}`} key={action.id} className="flex flex-col items-center gap-2 shrink-0 snap-start">
-            <div className="w-[80px] h-[80px] rounded-[20px] bg-[#121824] border border-white/5 hover:border-white/20 flex flex-col items-center justify-center gap-2 transition-colors shadow-lg cursor-pointer">
-              <action.icon className={`w-7 h-7 ${action.color}`} strokeWidth={1.5} />
+          <Link href={`/${action.id}`} key={action.id} className="flex flex-col items-center gap-1.5 shrink-0 snap-start">
+            <div className="w-[68px] h-[68px] rounded-[16px] bg-[#121824] border border-white/5 hover:border-white/20 flex flex-col items-center justify-center transition-colors shadow-lg cursor-pointer">
+              <action.icon className={`w-6 h-6 ${action.color}`} strokeWidth={1.5} />
             </div>
-            <span className="text-[11px] font-medium text-white/80">{action.label}</span>
+            <span className="text-[10px] font-medium text-white/80">{action.label}</span>
           </Link>
         ))}
-        <div className="w-4 shrink-0 md:hidden"></div>
       </section>
 
 
