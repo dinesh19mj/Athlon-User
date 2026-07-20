@@ -11,12 +11,12 @@ const mockResults = [
 
 export default function OrganizerResultsPage() {
   return (
-    <div className="min-h-screen bg-[#0A0F1A] text-white font-sans p-4 md:p-8 pb-32">
+    <div className="min-h-screen bg-background text-foreground font-sans p-4 md:p-8 pb-32">
       
       {/* Header */}
       <header className="mb-6 mt-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/organizer" className="p-2 -ml-2 text-white/70 hover:text-white transition-colors">
+          <Link href="/organizer" className="p-2 -ml-2 text-foreground/70 hover:text-foreground transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <div className="p-2 bg-purple-500/10 rounded-xl border border-purple-500/20">
@@ -27,7 +27,7 @@ export default function OrganizerResultsPage() {
           </h1>
         </div>
         
-        <button className="hidden md:flex bg-white/5 border border-white/10 text-white font-bold py-2 px-4 rounded-xl items-center justify-center gap-2 hover:bg-white/10 transition-colors">
+        <button className="hidden md:flex bg-foreground/5 border border-foreground/10 text-foreground font-bold py-2 px-4 rounded-xl items-center justify-center gap-2 hover:bg-foreground/10 transition-colors">
           <Download className="w-4 h-4" /> Export CSV
         </button>
       </header>
@@ -35,7 +35,7 @@ export default function OrganizerResultsPage() {
       {/* Results List */}
       <div className="space-y-4">
         {mockResults.map((result) => (
-          <div key={result.id} className="bg-[#121824] border border-white/5 rounded-2xl p-4 shadow-xl hover:border-white/20 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div key={result.id} className="bg-surface border border-foreground/5 rounded-2xl p-4 shadow-xl hover:border-foreground/20 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4">
             
             <div className="flex items-start md:items-center gap-4">
               <div className="w-10 h-10 rounded-full bg-[#1B9C56]/10 flex items-center justify-center border border-[#1B9C56]/20 shrink-0">
@@ -43,13 +43,13 @@ export default function OrganizerResultsPage() {
               </div>
               <div>
                 <h3 className="text-sm font-black uppercase tracking-widest">{result.winner}</h3>
-                <p className="text-xs text-white/50 font-medium mt-1">{result.tournament} • {result.category}</p>
+                <p className="text-xs text-foreground/50 font-medium mt-1">{result.tournament} • {result.category}</p>
               </div>
             </div>
 
-            <div className="flex flex-row md:flex-col items-center md:items-end justify-between bg-[#0A0F1A] md:bg-transparent p-3 md:p-0 rounded-xl border border-white/5 md:border-none">
-              <span className="text-xs text-white/40 font-bold uppercase tracking-widest mb-1">{result.date}</span>
-              <span className="text-sm font-bold text-white tracking-wide">{result.score}</span>
+            <div className="flex flex-row md:flex-col items-center md:items-end justify-between bg-background md:bg-transparent p-3 md:p-0 rounded-xl border border-foreground/5 md:border-none">
+              <span className="text-xs text-foreground/40 font-bold uppercase tracking-widest mb-1">{result.date}</span>
+              <span className="text-sm font-bold text-foreground tracking-wide">{result.score}</span>
             </div>
             
           </div>

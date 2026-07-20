@@ -24,7 +24,7 @@ export function Hero() {
               <span className="text-xs font-semibold text-(--text-muted) uppercase tracking-wide">Live Scoring Platform</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
               The tournament experience, <span className="text-(--primary)">elevated.</span>
             </h1>
 
@@ -41,7 +41,7 @@ export function Hero() {
               </Link>
               <Link
                 href="/live-showcase"
-                className="inline-flex items-center justify-center gap-2 bg-(--surface-elevated) text-white font-semibold px-8 py-4 rounded-(--radius-pill) hover:bg-(--border) transition-all text-lg border border-(--border)"
+                className="inline-flex items-center justify-center gap-2 bg-(--surface-elevated) text-foreground font-semibold px-8 py-4 rounded-(--radius-pill) hover:bg-(--border) transition-all text-lg border border-(--border)"
               >
                 <PlayCircle className="w-5 h-5" /> See it live
               </Link>

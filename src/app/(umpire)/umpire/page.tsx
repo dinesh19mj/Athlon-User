@@ -36,7 +36,7 @@ export default function UmpireDashboardPage() {
   }, []);
 
   return (
-    <div className="h-[calc(100vh-156px)] md:h-[calc(100vh-64px)] bg-[#0A0F1A] text-white font-sans p-4 md:p-8 overflow-hidden flex flex-col">
+    <div className="h-[calc(100vh-156px)] md:h-[calc(100vh-64px)] bg-background text-foreground font-sans p-4 md:p-8 overflow-hidden flex flex-col">
       
       {/* Header Area (App Style) */}
       <header className="mb-6 mt-2 flex items-center justify-between">
@@ -46,10 +46,10 @@ export default function UmpireDashboardPage() {
       </header>
 
       {/* Hero Banner Carousel (From Organizer/Home Page) */}
-      <section className="relative w-full min-h-[220px] rounded-[24px] overflow-hidden bg-[#0A0F1A] border border-white/10 shadow-[0_10px_40px_rgba(255,59,48,0.15)] mb-8">
+      <section className="relative w-full min-h-[220px] rounded-[24px] overflow-hidden bg-background border border-foreground/10 shadow-[0_10px_40px_rgba(255,59,48,0.15)] mb-8">
         
         {/* Animated Background Images */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#0A0F1A]">
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-background">
           {/* Base dark gradient to ensure text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#001122] via-[#001122]/90 to-[#001122]/40 z-10" />
 
@@ -71,22 +71,22 @@ export default function UmpireDashboardPage() {
         </div>
 
         <div className="relative z-10 p-6 flex flex-col justify-center h-full w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1 mb-2 w-fit rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-2 w-fit rounded-full bg-foreground/5 border border-foreground/10 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-[10px] font-bold text-white uppercase tracking-wider">Umpire Mode</span>
+            <span className="text-[10px] font-bold text-foreground uppercase tracking-wider">Umpire Mode</span>
           </div>
           <h1 className="text-[22px] sm:text-[24px] font-black leading-tight tracking-wide uppercase drop-shadow-lg">
-            <span className="text-white">Officiate Matches</span><br />
+            <span className="text-foreground">Officiate Matches</span><br />
             <span className="text-red-500">Enforce Fair Play</span>
           </h1>
-          <p className="text-[11px] sm:text-xs text-white/80 mt-2 mb-5 max-w-[260px] leading-relaxed drop-shadow-md">
+          <p className="text-[11px] sm:text-xs text-foreground/80 mt-2 mb-5 max-w-[260px] leading-relaxed drop-shadow-md">
             Setup Matches, Track Live Scores & Manage Courts.<br />Everything you need in one place!
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <Link href="/umpire/setup" className="flex items-center justify-center gap-1.5 bg-red-500 text-white text-[10px] sm:text-[11px] font-black px-4 py-2.5 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,59,48,0.3)]">
+            <Link href="/umpire/setup" className="flex items-center justify-center gap-1.5 bg-red-500 text-foreground text-[10px] sm:text-[11px] font-black px-4 py-2.5 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-[0_0_20px_rgba(255,59,48,0.3)]">
               START MATCH <Play className="w-3.5 h-3.5 fill-current" />
             </Link>
-            <Link href="#" className="flex items-center justify-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-[11px] font-bold px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors">
+            <Link href="#" className="flex items-center justify-center gap-1.5 bg-black/40 backdrop-blur-md border border-foreground/20 text-foreground text-[10px] sm:text-[11px] font-bold px-4 py-2.5 rounded-xl hover:bg-foreground/10 transition-colors">
               <Calendar className="w-3.5 h-3.5 text-red-500" /> VIEW SCHEDULE
             </Link>
           </div>
@@ -99,7 +99,7 @@ export default function UmpireDashboardPage() {
               key={idx}
               onClick={() => setCurrentBg(idx)}
               className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                idx === currentBg ? 'bg-red-500' : 'bg-white/30 hover:bg-white/50'
+                idx === currentBg ? 'bg-red-500' : 'bg-foreground/30 hover:bg-foreground/50'
               }`}
             />
           ))}
@@ -110,10 +110,10 @@ export default function UmpireDashboardPage() {
       <section className="flex items-center gap-3 overflow-x-auto pb-6 pt-1 snap-x scroll-px-4 hide-scrollbar -mx-4 px-4 md:mx-0">
         {quickActions.map((action) => (
           <Link href={`/${action.id}`} key={action.id} className="flex flex-col items-center gap-1.5 shrink-0 snap-start">
-            <div className="w-[68px] h-[68px] rounded-[16px] bg-[#121824] border border-white/5 hover:border-white/20 flex flex-col items-center justify-center transition-colors shadow-lg cursor-pointer">
+            <div className="w-[68px] h-[68px] rounded-[16px] bg-surface border border-foreground/5 hover:border-foreground/20 flex flex-col items-center justify-center transition-colors shadow-lg cursor-pointer">
               <action.icon className={`w-6 h-6 ${action.color}`} strokeWidth={1.5} />
             </div>
-            <span className="text-[10px] font-medium text-white/80">{action.label}</span>
+            <span className="text-[10px] font-medium text-foreground/80">{action.label}</span>
           </Link>
         ))}
       </section>

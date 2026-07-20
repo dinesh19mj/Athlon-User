@@ -68,7 +68,7 @@ export function AcademyTopNav() {
             color: token.colorTextSecondary,
           }}
         />
-        <h2 className="text-lg font-semibold m-0 text-white hidden md:block">
+        <h2 className="text-lg font-semibold m-0 text-foreground hidden md:block">
           Overview
         </h2>
       </div>
@@ -80,9 +80,9 @@ export function AcademyTopNav() {
           style={{ color: token.colorTextSecondary }}
         />
         <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" trigger={['click']}>
-          <div className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1 px-2 rounded transition-colors">
+          <div className="flex items-center gap-3 cursor-pointer hover:bg-foreground/5 p-1 px-2 rounded transition-colors">
             <div className="flex flex-col items-end hidden md:flex">
-              <span className="text-sm font-medium text-white leading-tight">Admin User</span>
+              <span className="text-sm font-medium text-foreground leading-tight">Admin User</span>
               <span className="text-xs text-gray-400">Academy Owner</span>
             </div>
             <Avatar icon={<UserOutlined />} style={{ backgroundColor: token.colorPrimary }} />

@@ -62,7 +62,7 @@ export function Features() {
             <span className="relative text-xs font-bold text-[--primary] uppercase tracking-wider">Unified Experience</span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-white">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
             One platform. <span className="text-[--primary]">Every role.</span>
           </h2>
 
@@ -79,23 +79,23 @@ export function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className={`group relative rounded-[24px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 backdrop-blur-2xl hover:border-white/20 p-8 sm:p-10 flex flex-col gap-6 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_0_rgba(var(--primary-rgb),0.2)] ${feature.colSpan}`}
+              className={`group relative rounded-[24px] border border-foreground/10 bg-gradient-to-br from-white/10 to-white/5 hover:from-white/15 hover:to-white/10 backdrop-blur-2xl hover:border-foreground/20 p-8 sm:p-10 flex flex-col gap-6 transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_0_rgba(var(--primary-rgb),0.2)] ${feature.colSpan}`}
             >
               {/* Hover Glow effect */}
               <div className="absolute inset-0 rounded-[24px] overflow-hidden pointer-events-none">
                 <div className={`absolute right-0 top-0 w-72 h-72 rounded-full blur-[90px] translate-x-1/3 -translate-y-1/3 transition-all duration-700 opacity-0 group-hover:opacity-100 ${feature.glow}`} />
               </div>
 
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 border border-white/30 backdrop-blur-xl flex items-center justify-center shrink-0 shadow-[0_4px_15px_rgba(0,0,0,0.2)] group-hover:scale-110 transition-all duration-500 relative ${feature.iconGlow}`}>
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-white/20 to-white/5 border border-foreground/30 backdrop-blur-xl flex items-center justify-center shrink-0 shadow-[0_4px_15px_rgba(0,0,0,0.2)] group-hover:scale-110 transition-all duration-500 relative ${feature.iconGlow}`}>
                 <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
                   <div className={`absolute inset-0 bg-gradient-to-tr ${feature.iconBg} to-transparent opacity-0 group-hover:opacity-100 transition-opacity`} />
                 </div>
-                <feature.icon className={`h-7 w-7 text-white transition-colors drop-shadow-md relative z-10 ${feature.iconText}`} />
+                <feature.icon className={`h-7 w-7 text-foreground transition-colors drop-shadow-md relative z-10 ${feature.iconText}`} />
               </div>
 
               <div className="mt-2 relative z-10">
                 <h3 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white to-white/80 mb-3 drop-shadow-sm">{feature.title}</h3>
-                <p className="text-white/70 leading-relaxed text-lg max-w-lg font-medium">
+                <p className="text-foreground/70 leading-relaxed text-lg max-w-lg font-medium">
                   {feature.desc}
                 </p>
               </div>
@@ -131,7 +131,7 @@ export function HowItWorks() {
             <span className="relative text-xs font-bold text-[--primary] uppercase tracking-wider">End to end flow</span>
           </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-white">
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight text-foreground">
             How Athlon works
           </h2>
 
@@ -153,7 +153,7 @@ export function HowItWorks() {
               transition={{ delay: i * 0.1, duration: 0.5 }}
               className="relative text-center group"
             >
-              <div className={`w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br from-white/10 to-white/5 border border-white/20 backdrop-blur-2xl flex items-center justify-center text-4xl font-black text-white/50 mb-8 shadow-xl transition-all duration-500 group-hover:-translate-y-3 relative ${step.border} ${step.shadow}`}>
+              <div className={`w-24 h-24 mx-auto rounded-[2rem] bg-gradient-to-br from-white/10 to-white/5 border border-foreground/20 backdrop-blur-2xl flex items-center justify-center text-4xl font-black text-foreground/50 mb-8 shadow-xl transition-all duration-500 group-hover:-translate-y-3 relative ${step.border} ${step.shadow}`}>
                 <div className="absolute inset-0 rounded-[2rem] overflow-hidden pointer-events-none">
                   <div className={`absolute inset-0 bg-gradient-to-tr ${step.bg} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                 </div>
@@ -161,7 +161,7 @@ export function HowItWorks() {
               </div>
 
               <h3 className="text-2xl font-extrabold mb-3 text-transparent bg-clip-text bg-gradient-to-br from-white to-white/80 drop-shadow-sm">{step.title}</h3>
-              <p className="text-white/70 leading-relaxed text-sm max-w-[250px] mx-auto font-medium">
+              <p className="text-foreground/70 leading-relaxed text-sm max-w-[250px] mx-auto font-medium">
                 {step.desc}
               </p>
             </motion.div>

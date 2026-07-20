@@ -56,23 +56,23 @@ export default function RegisterPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-(--primary)/20 via-transparent to-transparent opacity-50" />
         
         <div className="relative z-10">
-          <Link href="/" className="text-3xl font-extrabold tracking-tighter text-white">ATHLON</Link>
+          <Link href="/" className="text-3xl font-extrabold tracking-tighter text-foreground">ATHLON</Link>
         </div>
 
         <div className="relative z-10 max-w-md">
-          <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+          <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-foreground/5 border border-foreground/10 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-(--live) animate-pulse" />
-            <span className="text-xs font-semibold text-white/80 uppercase tracking-wide">Join the Community</span>
+            <span className="text-xs font-semibold text-foreground/80 uppercase tracking-wide">Join the Community</span>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4 leading-tight">
+          <h1 className="text-4xl font-bold text-foreground mb-4 leading-tight">
             Start your journey today.
           </h1>
-          <p className="text-lg text-white/60">
+          <p className="text-lg text-foreground/60">
             Create an account to participate in tournaments, track your scores, or organize events.
           </p>
         </div>
         
-        <div className="relative z-10 text-sm text-white/40">
+        <div className="relative z-10 text-sm text-foreground/40">
           © 2026 Athlon Sports.
         </div>
       </div>

@@ -12,12 +12,12 @@ const liveMatches = [
 
 export default function OrganizerLiveMatchesPage() {
   return (
-    <div className="min-h-screen bg-[#0A0F1A] text-white font-sans p-4 md:p-8 pb-32">
+    <div className="min-h-screen bg-background text-foreground font-sans p-4 md:p-8 pb-32">
       
       {/* Header */}
       <header className="mb-6 mt-2 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/organizer" className="p-2 -ml-2 text-white/70 hover:text-white transition-colors">
+          <Link href="/organizer" className="p-2 -ml-2 text-foreground/70 hover:text-foreground transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <div className="relative">
@@ -33,7 +33,7 @@ export default function OrganizerLiveMatchesPage() {
         <Link 
           href="/scoring/match-1" 
           target="_blank"
-          className="hidden md:flex bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-2 px-4 rounded-xl items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all"
+          className="hidden md:flex bg-foreground/5 hover:bg-foreground/10 border border-foreground/10 text-foreground font-bold py-2 px-4 rounded-xl items-center justify-center gap-2 hover:scale-105 active:scale-95 transition-all"
         >
           Open Umpire (Court 1) <ExternalLink className="w-4 h-4" />
         </Link>
@@ -44,15 +44,15 @@ export default function OrganizerLiveMatchesPage() {
         <Link 
           href="/scoring/match-1" 
           target="_blank"
-          className="w-full flex bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-3 px-4 rounded-xl items-center justify-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider"
+          className="w-full flex bg-foreground/5 hover:bg-foreground/10 border border-foreground/10 text-foreground font-bold py-3 px-4 rounded-xl items-center justify-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider"
         >
-          Open Umpire Link <ExternalLink className="w-4 h-4 text-white/50" />
+          Open Umpire Link <ExternalLink className="w-4 h-4 text-foreground/50" />
         </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {liveMatches.map(match => (
-          <div key={match.id} className="bg-[#121824] border border-white/5 rounded-3xl p-5 shadow-xl relative overflow-hidden group">
+          <div key={match.id} className="bg-surface border border-foreground/5 rounded-3xl p-5 shadow-xl relative overflow-hidden group">
             
             {/* Ambient Background Glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#1B9C56]/10 blur-3xl rounded-full" />
@@ -69,7 +69,7 @@ export default function OrganizerLiveMatchesPage() {
               </div>
 
               {/* The LiveMatchWidget relies on Firebase for scores, so we just embed it inside our styled card */}
-              <div className="bg-[#0A0F1A] rounded-2xl border border-white/5 p-4 mb-4">
+              <div className="bg-background rounded-2xl border border-foreground/5 p-4 mb-4">
                 <LiveMatchWidget 
                   matchId={match.id}
                   courtName={match.court}
@@ -78,7 +78,7 @@ export default function OrganizerLiveMatchesPage() {
                 />
               </div>
               
-              <button className="w-full py-3 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-white font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-colors">
+              <button className="w-full py-3 bg-foreground/5 hover:bg-foreground/10 border border-foreground/5 rounded-xl text-foreground font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2 transition-colors">
                 BROADCAST FEED <Tv className="w-4 h-4" />
               </button>
             </div>

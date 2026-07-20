@@ -64,7 +64,7 @@ export default function UmpireSchedulePage() {
   const [activeTab, setActiveTab] = useState<'today' | 'upcoming' | 'completed'>('today');
 
   return (
-    <div className="min-h-screen bg-[#0A0F1A] text-white font-sans flex flex-col relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans flex flex-col relative overflow-hidden">
       
       {/* Ambient Red Glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/10 rounded-full blur-[100px] pointer-events-none" />
@@ -72,17 +72,17 @@ export default function UmpireSchedulePage() {
 
       {/* HEADER */}
       <header className="px-4 py-6 flex items-center justify-between shrink-0 relative z-10">
-        <button onClick={() => router.push('/umpire')} className="p-3 -ml-3 text-white/70 hover:text-white transition-colors bg-white/0 hover:bg-white/5 rounded-full">
+        <button onClick={() => router.push('/umpire')} className="p-3 -ml-3 text-foreground/70 hover:text-foreground transition-colors bg-foreground/0 hover:bg-foreground/5 rounded-full">
           <ArrowLeft className="w-6 h-6" />
         </button>
         <div className="flex flex-col items-center">
-          <h1 className="text-xl font-black uppercase tracking-widest text-white drop-shadow-md">Match Schedule</h1>
+          <h1 className="text-xl font-black uppercase tracking-widest text-foreground drop-shadow-md">Match Schedule</h1>
           <div className="flex items-center gap-1.5 mt-1">
             <Calendar className="w-3 h-3 text-red-500" />
             <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Today</span>
           </div>
         </div>
-        <button className="p-3 -mr-3 text-white/70 hover:text-white transition-colors bg-white/0 hover:bg-white/5 rounded-full">
+        <button className="p-3 -mr-3 text-foreground/70 hover:text-foreground transition-colors bg-foreground/0 hover:bg-foreground/5 rounded-full">
           <Filter className="w-6 h-6" />
         </button>
       </header>
@@ -90,33 +90,33 @@ export default function UmpireSchedulePage() {
       {/* SEARCH BAR */}
       <div className="px-4 pb-4 relative z-10">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-foreground/30" />
           <input 
             type="text" 
             placeholder="Search players, courts..."
-            className="w-full bg-[#121824] border border-white/5 rounded-2xl pl-12 pr-4 py-4 text-sm font-bold text-white placeholder-white/30 focus:outline-none focus:border-red-500/50 focus:shadow-[0_0_15px_rgba(239,68,68,0.15)] transition-all shadow-xl"
+            className="w-full bg-surface border border-foreground/5 rounded-2xl pl-12 pr-4 py-4 text-sm font-bold text-foreground placeholder-white/30 focus:outline-none focus:border-red-500/50 focus:shadow-[0_0_15px_rgba(239,68,68,0.15)] transition-all shadow-xl"
           />
         </div>
       </div>
 
       {/* SEGMENTED TABS */}
       <div className="px-4 pb-6 shrink-0 relative z-10">
-        <div className="flex bg-[#121824] border border-white/5 p-1.5 rounded-2xl shadow-xl">
+        <div className="flex bg-surface border border-foreground/5 p-1.5 rounded-2xl shadow-xl">
           <button 
             onClick={() => setActiveTab('today')}
-            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${activeTab === 'today' ? 'bg-red-500 text-white shadow-[0_4px_20px_rgba(239,68,68,0.4)]' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${activeTab === 'today' ? 'bg-red-500 text-foreground shadow-[0_4px_20px_rgba(239,68,68,0.4)]' : 'text-foreground/40 hover:text-foreground hover:bg-foreground/5'}`}
           >
             Today
           </button>
           <button 
             onClick={() => setActiveTab('upcoming')}
-            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${activeTab === 'upcoming' ? 'bg-red-500 text-white shadow-[0_4px_20px_rgba(239,68,68,0.4)]' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${activeTab === 'upcoming' ? 'bg-red-500 text-foreground shadow-[0_4px_20px_rgba(239,68,68,0.4)]' : 'text-foreground/40 hover:text-foreground hover:bg-foreground/5'}`}
           >
             Upcoming
           </button>
           <button 
             onClick={() => setActiveTab('completed')}
-            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${activeTab === 'completed' ? 'bg-red-500 text-white shadow-[0_4px_20px_rgba(239,68,68,0.4)]' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
+            className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${activeTab === 'completed' ? 'bg-red-500 text-foreground shadow-[0_4px_20px_rgba(239,68,68,0.4)]' : 'text-foreground/40 hover:text-foreground hover:bg-foreground/5'}`}
           >
             Completed
           </button>
@@ -128,35 +128,35 @@ export default function UmpireSchedulePage() {
         {scheduledMatches.map((match, i) => (
           <div 
             key={match.id}
-            className={`bg-[#121824] border ${match.accent} rounded-3xl p-5 shadow-xl animate-in fade-in slide-in-from-bottom-4`}
+            className={`bg-surface border ${match.accent} rounded-3xl p-5 shadow-xl animate-in fade-in slide-in-from-bottom-4`}
             style={{ animationDelay: `${i * 100}ms`, animationFillMode: 'both' }}
           >
-            <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-4">
+            <div className="flex items-center justify-between mb-4 border-b border-foreground/5 pb-4">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-xl ${match.status === 'IN PROGRESS' ? 'bg-blue-500/20 text-blue-500' : 'bg-[#0A0F1A] border border-white/5 text-white/70'}`}>
+                <div className={`p-2 rounded-xl ${match.status === 'IN PROGRESS' ? 'bg-blue-500/20 text-blue-500' : 'bg-background border border-foreground/5 text-foreground/70'}`}>
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white tracking-wide">{match.time}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mt-0.5">{match.status}</p>
+                  <h3 className="text-sm font-bold text-foreground tracking-wide">{match.time}</h3>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-foreground/40 mt-0.5">{match.status}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-1.5 bg-[#0A0F1A] px-3 py-1.5 rounded-full border border-white/5">
+              <div className="flex items-center gap-1.5 bg-background px-3 py-1.5 rounded-full border border-foreground/5">
                 <MapPin className="w-3.5 h-3.5 text-red-500" />
-                <span className="text-xs font-bold text-white/70">{match.court}</span>
+                <span className="text-xs font-bold text-foreground/70">{match.court}</span>
               </div>
             </div>
 
             <div className="mb-5">
               <div className="flex items-center gap-2 mb-3">
                 <Trophy className="w-3.5 h-3.5 text-yellow-500" />
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/50">{match.category}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/50">{match.category}</span>
               </div>
               
-              <div className="flex items-center justify-between bg-[#0A0F1A] p-4 rounded-2xl border border-white/5">
-                <span className="text-sm font-bold text-white w-[40%] truncate">{match.teamA}</span>
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/30 shrink-0">VS</span>
-                <span className="text-sm font-bold text-white w-[40%] text-right truncate">{match.teamB}</span>
+              <div className="flex items-center justify-between bg-background p-4 rounded-2xl border border-foreground/5">
+                <span className="text-sm font-bold text-foreground w-[40%] truncate">{match.teamA}</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/30 shrink-0">VS</span>
+                <span className="text-sm font-bold text-foreground w-[40%] text-right truncate">{match.teamB}</span>
               </div>
             </div>
 
@@ -165,7 +165,7 @@ export default function UmpireSchedulePage() {
               className={`w-full py-3.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all ${
                 match.status === 'IN PROGRESS' 
                 ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20 hover:bg-blue-500/20' 
-                : 'bg-red-500 text-white shadow-[0_5px_20px_rgba(239,68,68,0.3)] hover:bg-red-400'
+                : 'bg-red-500 text-foreground shadow-[0_5px_20px_rgba(239,68,68,0.3)] hover:bg-red-400'
               }`}
             >
               {match.status === 'IN PROGRESS' ? (

@@ -66,10 +66,10 @@ export function AcademySidebar() {
     <>
       <div className="flex items-center justify-center h-16 border-b" style={{ borderColor: token.colorBorderSecondary }}>
         {collapsed && !isMobile ? (
-          <div className="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold">A</div>
+          <div className="w-8 h-8 rounded bg-primary text-foreground flex items-center justify-center font-bold">A</div>
         ) : (
-          <div className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            <span className="w-6 h-6 rounded bg-primary text-white flex items-center justify-center text-xs">A</span>
+          <div className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+            <span className="w-6 h-6 rounded bg-primary text-foreground flex items-center justify-center text-xs">A</span>
             Athlon Academy
           </div>
         )}

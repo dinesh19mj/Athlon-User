@@ -51,18 +51,18 @@ export default function AcademiesPage() {
   const others = academies.filter(a => !a.featured);
 
   return (
-    <div className="min-h-screen w-full bg-[#0A0F1A] text-white font-sans pb-24 overflow-y-auto selection:bg-[#1B9C56] selection:text-black">
+    <div className="min-h-screen w-full bg-background text-foreground font-sans pb-24 overflow-y-auto selection:bg-[#1B9C56] selection:text-black">
       
       {/* Top Navbar */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-[#0A0F1A]/90 backdrop-blur-md border-b border-white/5">
+      <header className="sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-background/90 backdrop-blur-md border-b border-foreground/5">
         <div className="flex items-center gap-3">
-          <Link href="/" className="p-2 -ml-2 text-white hover:text-[#1B9C56] transition-colors">
+          <Link href="/" className="p-2 -ml-2 text-foreground hover:text-[#1B9C56] transition-colors">
             <ArrowLeft className="w-6 h-6" />
           </Link>
           <h1 className="text-lg font-bold uppercase tracking-wider">Academies</h1>
         </div>
         
-        <button className="p-2 -mr-2 text-white hover:text-[#1B9C56] transition-colors">
+        <button className="p-2 -mr-2 text-foreground hover:text-[#1B9C56] transition-colors">
           <Search className="w-5 h-5" />
         </button>
       </header>
@@ -72,7 +72,7 @@ export default function AcademiesPage() {
         {/* Filters / Quick Search */}
         <div className="flex items-center gap-3 overflow-x-auto hide-scrollbar pb-2">
           {['Near Me', 'Top Rated', 'Coaching', 'BWF Certified', 'Open Now'].map((filter, idx) => (
-            <button key={idx} className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${idx === 0 ? 'bg-[#1B9C56] text-black' : 'bg-[#121824] border border-white/10 text-white/70 hover:text-white'}`}>
+            <button key={idx} className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${idx === 0 ? 'bg-[#1B9C56] text-black' : 'bg-surface border border-foreground/10 text-foreground/70 hover:text-foreground'}`}>
               {filter}
             </button>
           ))}
@@ -80,7 +80,7 @@ export default function AcademiesPage() {
 
         {/* Featured Academy Card */}
         {featured && (
-          <section className="relative w-full h-[320px] rounded-[24px] overflow-hidden bg-[#121824] border border-white/10 shadow-[0_10px_40px_rgba(0,136,255,0.15)] group cursor-pointer">
+          <section className="relative w-full h-[320px] rounded-[24px] overflow-hidden bg-surface border border-foreground/10 shadow-[0_10px_40px_rgba(0,136,255,0.15)] group cursor-pointer">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
               <img src={featured.image} alt={featured.name} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" />
@@ -90,23 +90,23 @@ export default function AcademiesPage() {
 
             {/* Featured Badge */}
             <div className="absolute top-4 left-4 z-10 bg-[#1B9C56] px-3 py-1 rounded-full flex items-center gap-1.5 shadow-lg">
-              <ShieldCheck className="w-3.5 h-3.5 text-white" />
-              <span className="text-[9px] font-black uppercase tracking-wider text-white">Top Pick</span>
+              <ShieldCheck className="w-3.5 h-3.5 text-foreground" />
+              <span className="text-[9px] font-black uppercase tracking-wider text-foreground">Top Pick</span>
             </div>
             
             {/* Content */}
             <div className="absolute bottom-0 left-0 right-0 p-5 z-10 flex flex-col justify-end">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-black leading-tight text-white drop-shadow-md">
+                <h2 className="text-2xl font-black leading-tight text-foreground drop-shadow-md">
                   {featured.name}
                 </h2>
-                <div className="flex items-center gap-1 bg-black/50 backdrop-blur-md px-2 py-1 rounded-lg border border-white/10">
+                <div className="flex items-center gap-1 bg-black/50 backdrop-blur-md px-2 py-1 rounded-lg border border-foreground/10">
                   <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                  <span className="text-xs font-bold text-white">{featured.rating}</span>
+                  <span className="text-xs font-bold text-foreground">{featured.rating}</span>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-xs text-white/80 mb-4">
+              <div className="flex items-center gap-4 text-xs text-foreground/80 mb-4">
                 <div className="flex items-center gap-1">
                   <MapPin className="w-3.5 h-3.5 text-[#FF7722]" />
                   <span>{featured.location}</span>
@@ -119,7 +119,7 @@ export default function AcademiesPage() {
 
               <div className="flex items-center gap-2 mb-5">
                 {featured.tags.map((tag, idx) => (
-                  <span key={idx} className="px-2 py-0.5 rounded border border-white/20 bg-white/10 backdrop-blur-md text-[9px] font-medium text-white">
+                  <span key={idx} className="px-2 py-0.5 rounded border border-foreground/20 bg-foreground/10 backdrop-blur-md text-[9px] font-medium text-foreground">
                     {tag}
                   </span>
                 ))}
@@ -129,8 +129,8 @@ export default function AcademiesPage() {
                 <button className="flex-1 flex items-center justify-center gap-1.5 bg-[#1B9C56] text-[#0A0F1A] text-xs font-black px-4 py-3 rounded-xl hover:opacity-90 transition-opacity">
                   BOOK COURT <ChevronRight className="w-4 h-4" />
                 </button>
-                <button className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors">
-                  <Phone className="w-5 h-5 text-white" />
+                <button className="w-12 h-12 rounded-xl bg-foreground/10 backdrop-blur-md border border-foreground/20 flex items-center justify-center hover:bg-foreground/20 transition-colors">
+                  <Phone className="w-5 h-5 text-foreground" />
                 </button>
               </div>
             </div>
@@ -139,38 +139,38 @@ export default function AcademiesPage() {
 
         {/* Regular Academies List */}
         <section>
-          <h3 className="text-xs font-bold text-white/50 tracking-wider uppercase mb-4 mt-2">More Academies</h3>
+          <h3 className="text-xs font-bold text-foreground/50 tracking-wider uppercase mb-4 mt-2">More Academies</h3>
           <div className="flex flex-col gap-4">
             {others.map((academy) => (
-              <div key={academy.id} className="bg-[#121824] border border-white/5 hover:border-white/20 rounded-[20px] p-3 flex gap-4 transition-colors shadow-lg cursor-pointer group">
+              <div key={academy.id} className="bg-surface border border-foreground/5 hover:border-foreground/20 rounded-[20px] p-3 flex gap-4 transition-colors shadow-lg cursor-pointer group">
                 
                 {/* Image Thumbnail */}
                 <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden relative">
                   <img src={academy.image} alt={academy.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80" />
-                  <div className="absolute top-1 left-1 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded flex items-center gap-1 border border-white/10">
+                  <div className="absolute top-1 left-1 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded flex items-center gap-1 border border-foreground/10">
                     <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                    <span className="text-[10px] font-bold text-white">{academy.rating}</span>
+                    <span className="text-[10px] font-bold text-foreground">{academy.rating}</span>
                   </div>
                 </div>
 
                 {/* Details */}
                 <div className="flex flex-col flex-1 justify-center">
                   <div className="flex justify-between items-start mb-1">
-                    <h4 className="text-sm font-bold text-white leading-tight group-hover:text-[#FF7722] transition-colors">{academy.name}</h4>
+                    <h4 className="text-sm font-bold text-foreground leading-tight group-hover:text-[#FF7722] transition-colors">{academy.name}</h4>
                     <span className="text-[10px] font-black text-[#1B9C56]">{academy.price}</span>
                   </div>
                   
-                  <div className="flex items-center gap-1 text-[10px] text-white/50 mb-2">
-                    <MapPin className="w-3 h-3 text-white/40" />
+                  <div className="flex items-center gap-1 text-[10px] text-foreground/50 mb-2">
+                    <MapPin className="w-3 h-3 text-foreground/40" />
                     <span className="truncate">{academy.location} ({academy.distance})</span>
                   </div>
 
                   <div className="flex items-center gap-1.5 flex-wrap mt-auto">
-                    <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#0A0F1A] border border-white/5 text-[9px] text-white/70">
+                    <span className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-background border border-foreground/5 text-[9px] text-foreground/70">
                       <Dumbbell className="w-3 h-3 text-purple-400" /> {academy.courts} Courts
                     </span>
                     {academy.tags.map((tag, idx) => (
-                      <span key={idx} className="px-1.5 py-0.5 rounded bg-[#0A0F1A] border border-white/5 text-[9px] text-white/70 whitespace-nowrap">
+                      <span key={idx} className="px-1.5 py-0.5 rounded bg-background border border-foreground/5 text-[9px] text-foreground/70 whitespace-nowrap">
                         {tag}
                       </span>
                     ))}

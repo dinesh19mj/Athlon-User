@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Home, Trophy, CalendarDays, Bell, User, LogOut, Menu, Settings, UserCircle, Activity } from 'lucide-react';
+import { BadmintonIcon } from '@/components/ui/BadmintonIcon';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 
 export default function PlayerLayout({ children }: { children: React.ReactNode }) {
@@ -20,9 +21,9 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
   ];
 
   return (
-    <div className="flex h-screen bg-[#0A0F1A] text-white">
+    <div className="flex h-screen bg-background text-foreground">
       {/* Desktop Sidebar */}
-      <aside className="w-64 border-r border-white/10 bg-[#121824] flex flex-col hidden md:flex z-50 relative">
+      <aside className="dark w-64 border-r border-white/10 bg-[#121824] flex flex-col hidden md:flex z-50 relative">
         <div className="p-4 border-b border-white/10">
           <Image src="/athlon-logo.png" alt="Athlon Logo" width={120} height={32} className="mb-4 object-contain w-auto h-10" />
           
@@ -33,7 +34,7 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
             </Link>
           </div>
         </div>
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="dark flex-1 p-4 space-y-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -52,13 +53,13 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
             )
           })}
         </nav>
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-foreground/10">
           <button 
             onClick={() => {
               logout();
               window.location.href = '/';
             }} 
-            className="flex items-center gap-3 text-white/50 hover:text-[#3B82F6] transition-colors w-full px-3 py-2"
+            className="flex items-center gap-3 text-foreground/50 hover:text-[#3B82F6] transition-colors w-full px-3 py-2"
           >
             <LogOut className="w-5 h-5" />
             <span className="font-medium">Logout</span>
@@ -67,9 +68,9 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-auto bg-[#0A0F1A] md:pb-0 pb-16">
+      <main className="flex-1 overflow-auto bg-background md:pb-0 pb-16">
         {/* Mobile Header (PWA Style) */}
-        <header className="md:hidden sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-[#0A0F1A]/90 backdrop-blur-md border-b border-white/10">
+        <header className="dark md:hidden sticky top-0 z-50 flex items-center justify-between px-4 py-4 bg-[#0A0F1A]/90 backdrop-blur-md border-b border-white/10">
           <div className="flex items-center gap-2">
             <Image src="/athlon-logo.png" alt="Athlon" width={90} height={18} className="object-contain w-auto h-10" />
           </div>
@@ -77,21 +78,21 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
           <div className="relative">
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 -mr-2 text-white hover:text-[#3B82F6] transition-colors"
+              className="p-2 -mr-2 text-foreground hover:text-[#3B82F6] transition-colors"
             >
               <Menu className="w-6 h-6" strokeWidth={1.5} />
             </button>
             
             {/* Dropdown Menu */}
             {isMenuOpen && (
-              <div className="absolute right-0 top-12 w-48 bg-[#121824] border border-white/10 rounded-xl shadow-2xl py-2 flex flex-col z-50 animate-in fade-in zoom-in-95 duration-200">
-                <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/5 transition-colors">
+              <div className="absolute right-0 top-12 w-48 bg-surface border border-foreground/10 rounded-xl shadow-2xl py-2 flex flex-col z-50 animate-in fade-in zoom-in-95 duration-200">
+                <Link href="/profile" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-foreground hover:bg-foreground/5 transition-colors">
                   <User className="w-4 h-4 text-[#3B82F6]" /> Profile
                 </Link>
-                <Link href="/settings" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-white hover:bg-white/5 transition-colors">
-                  <Settings className="w-4 h-4 text-white/70" /> Settings
+                <Link href="/settings" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-foreground hover:bg-foreground/5 transition-colors">
+                  <Settings className="w-4 h-4 text-foreground/70" /> Settings
                 </Link>
-                <div className="h-px bg-white/10 my-1 mx-2" />
+                <div className="h-px bg-foreground/10 my-1 mx-2" />
                 <button 
                   onClick={() => {
                     setIsMenuOpen(false);
@@ -111,7 +112,7 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
       </main>
 
       {/* Mobile Bottom Nav (PWA Style) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#0A0F1A]/95 backdrop-blur-xl border-t border-white/10 z-50 px-6 flex items-center justify-between">
+      <nav className="dark md:hidden fixed bottom-0 left-0 right-0 h-20 bg-[#0A0F1A]/95 backdrop-blur-xl border-t border-white/10 z-50 px-6 flex items-center justify-between">
         <Link href="/player" className={`flex flex-col items-center gap-1 w-16 transition-opacity ${pathname === '/player' ? 'opacity-100' : 'opacity-50 hover:opacity-100'}`}>
           <Home className={`w-6 h-6 ${pathname === '/player' ? 'text-[#3B82F6]' : 'text-white'}`} />
           <span className={`text-[9px] font-bold ${pathname === '/player' ? 'text-[#3B82F6]' : 'text-white'}`}>Home</span>
@@ -125,7 +126,7 @@ export default function PlayerLayout({ children }: { children: React.ReactNode }
         {/* Elevated Center + Button */}
         <div className="relative -top-6 flex items-center justify-center">
           <Link href="/player/matches" className="w-16 h-16 rounded-full bg-[#3B82F6] text-black shadow-[0_8px_30px_rgba(204,255,0,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform border-4 border-[#0A0F1A]">
-            <Activity className="w-8 h-8 stroke-[3]" />
+            <BadmintonIcon className="w-8 h-8 stroke-[3]" />
           </Link>
         </div>
 
