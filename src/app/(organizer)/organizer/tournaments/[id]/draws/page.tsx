@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { use } from 'react';
-import { ArrowLeft, PlusCircle, Share2, Printer, Search, Trophy } from 'lucide-react';
+import { use, useState } from 'react';
+import { ArrowLeft, PlusCircle, Share2, Printer, Search, Trophy, LayoutGrid } from 'lucide-react';
 
 // Mock data for a Quarter-Finals -> Semi-Finals -> Finals bracket
 const bracketData = {
@@ -34,6 +34,8 @@ const bracketData = {
 
 export default function DrawsAndBracketsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  
+  const [isDrawGenerated, setIsDrawGenerated] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans flex flex-col h-full overflow-hidden">
@@ -81,82 +83,121 @@ export default function DrawsAndBracketsPage({ params }: { params: Promise<{ id:
         </div>
       </header>
 
-      {/* Bracket Canvas (Scrollable) */}
-      <div className="flex-1 overflow-auto bg-[#0a0f1a] relative p-8">
-        <div className="inline-flex gap-16 min-w-max pb-16">
+      {/* Main Content Area */}
+      {!isDrawGenerated ? (
+        // Empty State: Generate Draw
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <div className="w-24 h-24 rounded-full bg-surface border border-foreground/5 flex items-center justify-center mb-6">
+            <LayoutGrid className="w-10 h-10 text-foreground/30" />
+          </div>
+          <h2 className="text-2xl font-black uppercase tracking-tight mb-2">Draws not generated</h2>
+          <p className="text-foreground/50 max-w-md mb-8">
+            Registration has 128 players for Men's Singles. You can now generate the bracket.
+          </p>
           
-          {bracketData.rounds.map((round, rIndex) => (
-            <div key={rIndex} className="flex flex-col relative w-64">
-              
-              {/* Round Header */}
-              <div className="text-center mb-8 shrink-0">
-                <h3 className="text-[11px] font-black uppercase tracking-widest text-foreground/50">{round.name}</h3>
-                <div className="h-1 w-8 bg-[#1B9C56] mx-auto mt-2 rounded-full opacity-50" />
-              </div>
-
-              {/* Matches Column */}
-              <div className="flex flex-col flex-1 justify-around gap-6">
-                {round.matches.map((match, mIndex) => {
-                  const isCompleted = match.winner !== null;
-                  return (
-                    <div key={mIndex} className="relative group">
-                      {/* Match Card */}
-                      <div className={`bg-surface border ${isCompleted ? 'border-foreground/20' : 'border-[#1B9C56]/30'} rounded-xl overflow-hidden shadow-lg hover:border-[#1B9C56] transition-colors relative z-10 cursor-pointer`}>
-                        <div className="bg-foreground/5 px-3 py-1.5 flex justify-between items-center border-b border-foreground/5">
-                          <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest">Match {match.id}</span>
-                          <span className="text-[10px] font-bold text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded">{match.time}</span>
-                        </div>
-                        
-                        <div className="flex flex-col">
-                          {/* Player 1 */}
-                          <div className={`flex items-center justify-between px-3 py-2 ${match.winner === 1 ? 'bg-[#1B9C56]/10' : ''}`}>
-                            <span className={`text-sm font-black ${match.winner === 2 ? 'text-foreground/40 line-through' : 'text-foreground'}`}>{match.player1}</span>
-                            <span className={`text-sm font-bold ${match.winner === 1 ? 'text-[#1B9C56]' : 'text-foreground/50'}`}>{match.score1 ?? '-'}</span>
-                          </div>
-                          <div className="h-[1px] w-full bg-foreground/5" />
-                          {/* Player 2 */}
-                          <div className={`flex items-center justify-between px-3 py-2 ${match.winner === 2 ? 'bg-[#1B9C56]/10' : ''}`}>
-                            <span className={`text-sm font-black ${match.winner === 1 ? 'text-foreground/40 line-through' : 'text-foreground'}`}>{match.player2}</span>
-                            <span className={`text-sm font-bold ${match.winner === 2 ? 'text-[#1B9C56]' : 'text-foreground/50'}`}>{match.score2 ?? '-'}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Connecting Lines to Next Round (if not final round) */}
-                      {rIndex < bracketData.rounds.length - 1 && (
-                        <div className="hidden lg:block absolute left-full top-1/2 w-8 h-[1px] bg-foreground/20 -translate-y-1/2 -z-10" />
-                      )}
-                      {/* Connecting Lines from Previous Round (if not first round) */}
-                      {rIndex > 0 && (
-                        <>
-                          <div className="hidden lg:block absolute right-full top-1/2 w-8 h-[1px] bg-foreground/20 -translate-y-1/2 -z-10" />
-                          {/* Vertical Line connecting the two previous matches */}
-                          {mIndex % 2 === 0 ? (
-                            <div className="hidden lg:block absolute right-full top-1/2 w-[1px] h-[calc(100%+1.5rem)] bg-foreground/20 -z-10" />
-                          ) : (
-                            <div className="hidden lg:block absolute right-full bottom-1/2 w-[1px] h-[calc(100%+1.5rem)] bg-foreground/20 -z-10" />
-                          )}
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+          <div className="bg-surface border border-foreground/10 rounded-2xl p-6 text-left w-full max-w-sm shadow-xl mb-8">
+            <div className="mb-4">
+              <label className="block text-[10px] font-black text-foreground/50 uppercase tracking-widest mb-2">Seeding Method</label>
+              <select className="w-full bg-background border border-foreground/10 rounded-xl py-3 px-4 text-sm font-bold text-foreground focus:outline-none focus:border-[#1B9C56]">
+                <option>Random Draw</option>
+                <option>Manual Seeding</option>
+                <option>Rank Based</option>
+              </select>
             </div>
-          ))}
-          
-          {/* Winner Section */}
-          <div className="flex flex-col justify-center items-center relative w-48 -ml-8">
-             <div className="hidden lg:block absolute right-full top-1/2 w-8 h-[1px] bg-foreground/20 -translate-y-1/2 -z-10" />
-             <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#1B9C56] to-green-800 flex items-center justify-center shadow-[0_0_30px_rgba(27,156,86,0.5)] border-4 border-background z-10 mb-4 animate-pulse">
-                <Trophy className="w-10 h-10 text-black" />
-             </div>
-             <h3 className="text-sm font-black text-[#1B9C56] uppercase tracking-widest">Champion</h3>
-             <p className="text-foreground/50 text-xs font-bold mt-1">TBD</p>
+            <div>
+              <label className="block text-[10px] font-black text-foreground/50 uppercase tracking-widest mb-2">Include Byes</label>
+              <select className="w-full bg-background border border-foreground/10 rounded-xl py-3 px-4 text-sm font-bold text-foreground focus:outline-none focus:border-[#1B9C56]">
+                <option>Yes, balance bracket automatically</option>
+                <option>No, strict power of 2</option>
+              </select>
+            </div>
           </div>
 
+          <button 
+            onClick={() => setIsDrawGenerated(true)}
+            className="bg-[#1B9C56] text-black font-black uppercase tracking-wide py-4 px-12 rounded-xl hover:scale-105 active:scale-95 transition-transform shadow-[0_10px_30px_rgba(27,156,86,0.3)]"
+          >
+            Generate Bracket
+          </button>
         </div>
-      </div>
+      ) : (
+        // Bracket Canvas (Scrollable)
+        <div className="flex-1 overflow-auto bg-[#0a0f1a] relative p-8">
+          <div className="inline-flex gap-16 min-w-max pb-16">
+            
+            {bracketData.rounds.map((round, rIndex) => (
+              <div key={rIndex} className="flex flex-col relative w-64">
+                
+                {/* Round Header */}
+                <div className="text-center mb-8 shrink-0">
+                  <h3 className="text-[11px] font-black uppercase tracking-widest text-foreground/50">{round.name}</h3>
+                  <div className="h-1 w-8 bg-[#1B9C56] mx-auto mt-2 rounded-full opacity-50" />
+                </div>
+
+                {/* Matches Column */}
+                <div className="flex flex-col flex-1 justify-around gap-6">
+                  {round.matches.map((match, mIndex) => {
+                    const isCompleted = match.winner !== null;
+                    return (
+                      <div key={mIndex} className="relative group">
+                        {/* Match Card */}
+                        <div className={`bg-surface border ${isCompleted ? 'border-foreground/20' : 'border-[#1B9C56]/30'} rounded-xl overflow-hidden shadow-lg hover:border-[#1B9C56] transition-colors relative z-10 cursor-pointer`}>
+                          <div className="bg-foreground/5 px-3 py-1.5 flex justify-between items-center border-b border-foreground/5">
+                            <span className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest">Match {match.id}</span>
+                            <span className="text-[10px] font-bold text-orange-500 bg-orange-500/10 px-1.5 py-0.5 rounded">{match.time}</span>
+                          </div>
+                          
+                          <div className="flex flex-col">
+                            {/* Player 1 */}
+                            <div className={`flex items-center justify-between px-3 py-2 ${match.winner === 1 ? 'bg-[#1B9C56]/10' : ''}`}>
+                              <span className={`text-sm font-black ${match.winner === 2 ? 'text-foreground/40 line-through' : 'text-foreground'}`}>{match.player1}</span>
+                              <span className={`text-sm font-bold ${match.winner === 1 ? 'text-[#1B9C56]' : 'text-foreground/50'}`}>{match.score1 ?? '-'}</span>
+                            </div>
+                            <div className="h-[1px] w-full bg-foreground/5" />
+                            {/* Player 2 */}
+                            <div className={`flex items-center justify-between px-3 py-2 ${match.winner === 2 ? 'bg-[#1B9C56]/10' : ''}`}>
+                              <span className={`text-sm font-black ${match.winner === 1 ? 'text-foreground/40 line-through' : 'text-foreground'}`}>{match.player2}</span>
+                              <span className={`text-sm font-bold ${match.winner === 2 ? 'text-[#1B9C56]' : 'text-foreground/50'}`}>{match.score2 ?? '-'}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Connecting Lines to Next Round (if not final round) */}
+                        {rIndex < bracketData.rounds.length - 1 && (
+                          <div className="hidden lg:block absolute left-full top-1/2 w-8 h-[1px] bg-foreground/20 -translate-y-1/2 -z-10" />
+                        )}
+                        {/* Connecting Lines from Previous Round (if not first round) */}
+                        {rIndex > 0 && (
+                          <>
+                            <div className="hidden lg:block absolute right-full top-1/2 w-8 h-[1px] bg-foreground/20 -translate-y-1/2 -z-10" />
+                            {/* Vertical Line connecting the two previous matches */}
+                            {mIndex % 2 === 0 ? (
+                              <div className="hidden lg:block absolute right-full top-1/2 w-[1px] h-[calc(100%+1.5rem)] bg-foreground/20 -z-10" />
+                            ) : (
+                              <div className="hidden lg:block absolute right-full bottom-1/2 w-[1px] h-[calc(100%+1.5rem)] bg-foreground/20 -z-10" />
+                            )}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+            
+            {/* Winner Section */}
+            <div className="flex flex-col justify-center items-center relative w-48 -ml-8">
+               <div className="hidden lg:block absolute right-full top-1/2 w-8 h-[1px] bg-foreground/20 -translate-y-1/2 -z-10" />
+               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#1B9C56] to-green-800 flex items-center justify-center shadow-[0_0_30px_rgba(27,156,86,0.5)] border-4 border-background z-10 mb-4 animate-pulse">
+                  <Trophy className="w-10 h-10 text-black" />
+               </div>
+               <h3 className="text-sm font-black text-[#1B9C56] uppercase tracking-widest">Champion</h3>
+               <p className="text-foreground/50 text-xs font-bold mt-1">TBD</p>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }
