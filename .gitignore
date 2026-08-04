@@ -1,0 +1,4 @@
+﻿node_modules
+.next
+.next.zip
+build_output/.next
