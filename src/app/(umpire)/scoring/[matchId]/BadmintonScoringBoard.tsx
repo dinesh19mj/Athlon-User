@@ -1,29 +1,78 @@
 'use client';
 
 import { useMatchStore, Team } from '@/lib/store/useMatchStore';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, use } from 'react';
 import { Undo2, Redo2, MessageSquare, VolumeX, Volume2, Cast, Menu, RefreshCcw, ArrowLeftRight, ArrowUpDown, Smartphone, Trophy, Camera } from 'lucide-react';
 import Link from 'next/link';
+import { MatchService } from '@/lib/api/matches';
+import { ScoreService } from '@/lib/api/scores';
 
 export default function UmpireScoringPage({ params }: { params: Promise<{ matchId: string }> }) {
   const router = useRouter();
   const store = useMatchStore();
   const { matchId } = use(params);
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get('categoryId');
   const isOfficial = matchId !== 'live';
 
   const { config, currentGameIndex, games, matchWinner, teamsFlipped } = store;
 
   useEffect(() => {
-    // Automatically mock/setup match data for official tournament matches if not present in the store
+    // Fetch match data for official tournament matches if not present in the store
     if (isOfficial && !config) {
-      store.setupMatch({
-        id: matchId,
-        category: 'Doubles',
-        bestOfSets: 3,
-        pointBreak: 21,
-        teamA: ['Rahul', 'Amit'],
-        teamB: ['Siva', 'Dinesh']
+      MatchService.getById(matchId)
+        .then((res: any) => {
+          if (res && res.data) {
+            const m = res.data;
+            if (m.status === 'COMPLETED') {
+              // Match is already finished: redirect to view score and player details
+              router.replace(`/live-score/${matchId}`);
+              return;
+            }
+
+            const teamAParts = m.teamAName ? m.teamAName.split(/\s*&\s*/) : ['Team A'];
+            const teamBParts = m.teamBName ? m.teamBName.split(/\s*&\s*/) : ['Team B'];
+            const category = (teamAParts.length > 1 || teamBParts.length > 1) ? 'Doubles' : 'Singles';
+            
+            store.setupMatch({
+              id: matchId,
+              category: category as any,
+              bestOfSets: 3,
+              pointBreak: 21,
+              teamA: teamAParts,
+              teamB: teamBParts,
+              teamAName: m.teamAName,
+              teamBName: m.teamBName,
+              tournamentName: m.tournamentName,
+              courtName: m.courtName || (m.courtId ? `Court ${m.courtId}` : 'Court 1'),
+              sportType: m.sportType || 'Badminton',
+            });
+
+            // Mark match as LIVE
+            MatchService.updateStatus(matchId, 'LIVE').catch(err => console.error("Failed to set match status LIVE", err));
+          }
+        })
+        .catch(err => {
+          console.error("Failed to load match details for scoring:", err);
+          store.setupMatch({
+            id: matchId,
+            category: 'Doubles',
+            bestOfSets: 3,
+            pointBreak: 21,
+            teamA: ['Player 1 (A)', 'Player 2 (A)'],
+            teamB: ['Player 1 (B)', 'Player 2 (B)']
+          });
+        });
+    } else if (isOfficial && config) {
+      MatchService.getById(matchId).then((res: any) => {
+        if (res && res.data && res.data.status === 'COMPLETED') {
+          router.replace(`/live-score/${matchId}`);
+        } else {
+          MatchService.updateStatus(matchId, 'LIVE').catch(() => {});
+        }
+      }).catch(() => {
+        MatchService.updateStatus(matchId, 'LIVE').catch(() => {});
       });
     }
   }, [isOfficial, config, matchId, store]);
@@ -36,6 +85,8 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
   const [isMuted, setIsMuted] = useState(true);
 
   const [intervalSeconds, setIntervalSeconds] = useState(120);
+  const [isRallyActive, setIsRallyActive] = useState(false);
+  const [rallyStartTime, setRallyStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -88,53 +139,102 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [matchWinner]);
 
-  if (!config) {
-    return (
-      <div className="flex flex-col items-center justify-center h-[100dvh] bg-background text-foreground p-6 text-center">
-        <h1 className="text-3xl font-bold mb-4">No Match Active</h1>
-        <p className="text-foreground/60 mb-8">Please configure a match first.</p>
-        <Link href="/match-setup" className="bg-red-500 text-black font-bold py-3 px-8 rounded-xl hover:opacity-90 active:scale-95 transition-transform">
-          Setup Match
-        </Link>
-      </div>
-    );
-  }
+  // Submit category score if this is a Team Event Category Match and it just finished
+  useEffect(() => {
+    if (matchWinner && categoryId && isOfficial && config) {
+      const winnerTeam = matchWinner === 'A' ? 'TEAM_A' : 'TEAM_B';
+      const setsTeamA = games.filter(g => g.winner === 'A').length;
+      const setsTeamB = games.filter(g => g.winner === 'B').length;
+      
+      const scoreSummary = `${setsTeamA}-${setsTeamB}`;
+      
+      const teamARegIdStr = searchParams.get('teamARegId');
+      const teamBRegIdStr = searchParams.get('teamBRegId');
+      
+      const winnerRegistrationId = matchWinner === 'A' && teamARegIdStr 
+        ? parseInt(teamARegIdStr) 
+        : (matchWinner === 'B' && teamBRegIdStr ? parseInt(teamBRegIdStr) : null);
+
+      import('@/lib/api/teamEvents').then(({ TeamEventService }) => {
+        TeamEventService.submitCategoryScore(parseInt(categoryId), winnerRegistrationId, scoreSummary)
+          .catch(err => console.error("Failed to submit category match score", err));
+      });
+    }
+  }, [matchWinner, categoryId, isOfficial, config, games, searchParams]);
+
+  // Sync live score state to scores table whenever score changes
+  useEffect(() => {
+    if (isOfficial && config && games.length > 0) {
+      const currentGame = games[currentGameIndex];
+      const stateToSync = {
+        config,
+        games,
+        currentGameIndex,
+        matchWinner,
+        teamAScore: currentGame ? String(currentGame.scoreA) : '0',
+        teamBScore: currentGame ? String(currentGame.scoreB) : '0',
+        isFinal: !!matchWinner
+      };
+
+      ScoreService.sync(matchId, stateToSync).catch(err => console.error("Failed to sync score state:", err));
+    }
+  }, [isOfficial, config, games, currentGameIndex, matchWinner, matchId]);
+
+  // Handle regular tournament match completion (set status COMPLETED & winnerRegistrationId)
+  useEffect(() => {
+    if (matchWinner && isOfficial && !categoryId) {
+      MatchService.getById(matchId).then((res: any) => {
+        const m = res.data;
+        const winnerRegId = matchWinner === 'A' ? m?.teamARegistrationId : m?.teamBRegistrationId;
+        MatchService.updateStatus(matchId, 'COMPLETED', winnerRegId)
+          .catch(err => console.error("Failed to set match status COMPLETED", err));
+      }).catch(() => {
+        MatchService.updateStatus(matchId, 'COMPLETED').catch(() => {});
+      });
+    }
+  }, [matchWinner, isOfficial, categoryId, matchId]);
 
   const currentGame = games[currentGameIndex];
 
   const handleScore = (team: Team) => {
-    store.addPoint(team);
+    const rallyTimeMs = rallyStartTime ? Date.now() - rallyStartTime : 0;
+    store.addPoint(team, rallyTimeMs);
+    setIsRallyActive(false);
+    setRallyStartTime(null);
   };
 
-  const isServeA = currentGame.currentServer === 'A';
-  const isServeB = currentGame.currentServer === 'B';
-  const serveFromRightA = isServeA && (currentGame.scoreA % 2 === 0);
-  const serveFromLeftA = isServeA && (currentGame.scoreA % 2 !== 0);
-  const serveFromRightB = isServeB && (currentGame.scoreB % 2 === 0);
-  const serveFromLeftB = isServeB && (currentGame.scoreB % 2 !== 0);
+  const isServeA = currentGame?.currentServer === 'A';
+  const isServeB = currentGame?.currentServer === 'B';
+  const serveFromRightA = isServeA && ((currentGame?.scoreA || 0) % 2 === 0);
+  const serveFromLeftA = isServeA && ((currentGame?.scoreA || 0) % 2 !== 0);
+  const serveFromRightB = isServeB && ((currentGame?.scoreB || 0) % 2 === 0);
+  const serveFromLeftB = isServeB && ((currentGame?.scoreB || 0) % 2 !== 0);
 
   let serverFullName = '';
   let receiverFullName = '';
 
-  if (isServeA) {
-    if (currentGame.scoreA % 2 === 0) {
-      serverFullName = currentGame.posA.right !== null ? config.teamA[currentGame.posA.right] : config.teamA[0];
-      receiverFullName = currentGame.posB.right !== null ? config.teamB[currentGame.posB.right] : config.teamB[0];
+  if (config && currentGame) {
+    if (isServeA) {
+      if (currentGame.scoreA % 2 === 0) {
+        serverFullName = currentGame.posA.right !== null ? config.teamA[currentGame.posA.right] : config.teamA[0];
+        receiverFullName = currentGame.posB.right !== null ? config.teamB[currentGame.posB.right] : config.teamB[0];
+      } else {
+        serverFullName = currentGame.posA.left !== null ? config.teamA[currentGame.posA.left] : config.teamA[0];
+        receiverFullName = currentGame.posB.left !== null ? config.teamB[currentGame.posB.left] : config.teamB[0];
+      }
     } else {
-      serverFullName = currentGame.posA.left !== null ? config.teamA[currentGame.posA.left] : config.teamA[0];
-      receiverFullName = currentGame.posB.left !== null ? config.teamB[currentGame.posB.left] : config.teamB[0];
-    }
-  } else {
-    if (currentGame.scoreB % 2 === 0) {
-      serverFullName = currentGame.posB.right !== null ? config.teamB[currentGame.posB.right] : config.teamB[0];
-      receiverFullName = currentGame.posA.right !== null ? config.teamA[currentGame.posA.right] : config.teamA[0];
-    } else {
-      serverFullName = currentGame.posB.left !== null ? config.teamB[currentGame.posB.left] : config.teamB[0];
-      receiverFullName = currentGame.posA.left !== null ? config.teamA[currentGame.posA.left] : config.teamA[0];
+      if (currentGame.scoreB % 2 === 0) {
+        serverFullName = currentGame.posB.right !== null ? config.teamB[currentGame.posB.right] : config.teamB[0];
+        receiverFullName = currentGame.posA.right !== null ? config.teamA[currentGame.posA.right] : config.teamA[0];
+      } else {
+        serverFullName = currentGame.posB.left !== null ? config.teamB[currentGame.posB.left] : config.teamB[0];
+        receiverFullName = currentGame.posA.left !== null ? config.teamA[currentGame.posA.left] : config.teamA[0];
+      }
     }
   }
 
   const generateUmpireCall = () => {
+    if (!config || !currentGame) return '';
     if (currentGame.scoreA === 0 && currentGame.scoreB === 0) {
       return `${serverFullName} to serve ${receiverFullName}. Love all. Play.`;
     }
@@ -199,6 +299,18 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
       window.speechSynthesis.speak(utterance);
     }
   }, [umpireCall, isMuted]);
+
+  if (!config || !currentGame) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[100dvh] bg-background text-foreground p-6 text-center">
+        <h1 className="text-3xl font-bold mb-4">No Match Active</h1>
+        <p className="text-foreground/60 mb-8">Please configure a match first.</p>
+        <Link href="/match-setup" className="bg-red-500 text-black font-bold py-3 px-8 rounded-xl hover:opacity-90 active:scale-95 transition-transform">
+          Setup Match
+        </Link>
+      </div>
+    );
+  }
 
   const leftTeam: Team = teamsFlipped ? 'B' : 'A';
   const rightTeam: Team = teamsFlipped ? 'A' : 'B';
@@ -552,8 +664,8 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
           {/* +1 BUTTON LEFT/TOP */}
           <button
             onClick={() => handleScore(leftTeam)}
-            disabled={currentGame.isGameOver || !!matchWinner}
-            className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-surface flex items-center justify-center hover:bg-[#1A2235] active:bg-foreground/10 transition-colors shadow-lg border border-foreground/5 disabled:opacity-50 relative overflow-hidden group`}
+            disabled={currentGame.isGameOver || !!matchWinner || (isMatchStarted && !isRallyActive)}
+            className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-surface flex items-center justify-center hover:bg-[#1A2235] active:bg-foreground/10 transition-colors shadow-lg border border-foreground/5 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group`}
           >
             {!isPortrait && <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#1B9C56] shadow-[0_0_20px_4px_rgba(27,156,86,0.5)]" />}
             <span className="text-foreground/60 font-medium text-lg relative z-10">+1</span>
@@ -579,6 +691,27 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
                 </button>
               )}
 
+              {/* Start Rally Button */}
+              {isMatchStarted && !isRallyActive && !currentGame.isGameOver && !matchWinner && !currentGame.isIntervalBreak && (
+                <button
+                  onClick={() => {
+                    setIsRallyActive(true);
+                    setRallyStartTime(Date.now());
+                  }}
+                  className={`absolute ${isPortrait ? 'left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2'} px-6 py-2.5 bg-[#1B9C56] rounded-full flex gap-2 items-center justify-center hover:bg-[#15803d] active:scale-95 transition-all shadow-[0_8px_30px_rgba(27,156,86,0.4)] border border-[#1B9C56]/40 text-black font-black uppercase tracking-widest text-xs z-30 whitespace-nowrap`}
+                >
+                  <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                  Start Rally
+                </button>
+              )}
+              {isMatchStarted && isRallyActive && (
+                <div
+                  className={`absolute ${isPortrait ? 'left-1/2 -translate-x-1/2' : 'top-1/2 -translate-y-1/2'} px-6 py-2.5 bg-[#1A2235] rounded-full flex gap-2 items-center justify-center shadow-[0_8px_30px_rgba(0,0,0,0.5)] border border-foreground/10 text-[#1B9C56] font-black uppercase tracking-widest text-xs z-30 whitespace-nowrap`}
+                >
+                  <div className="w-2 h-2 rounded-full bg-[#1B9C56] animate-pulse" />
+                  Rally Active
+                </div>
+              )}
 
             </div>
 
@@ -590,8 +723,8 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
           {/* +1 BUTTON RIGHT/BOTTOM */}
           <button
             onClick={() => handleScore(rightTeam)}
-            disabled={currentGame.isGameOver || !!matchWinner}
-            className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-surface flex items-center justify-center hover:bg-[#1A2235] active:bg-foreground/10 transition-colors shadow-lg border border-foreground/5 disabled:opacity-50 relative overflow-hidden group`}
+            disabled={currentGame.isGameOver || !!matchWinner || (isMatchStarted && !isRallyActive)}
+            className={`${isPortrait ? 'w-full py-3' : 'h-full w-16'} rounded-2xl bg-surface flex items-center justify-center hover:bg-[#1A2235] active:bg-foreground/10 transition-colors shadow-lg border border-foreground/5 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group`}
           >
             {!isPortrait && <div className="absolute right-0 top-0 bottom-0 w-[3px] bg-[#3B82F6] shadow-[0_0_20px_4px_rgba(59,130,246,0.5)]" />}
             <span className="text-foreground/60 font-medium text-lg relative z-10">+1</span>
@@ -604,54 +737,114 @@ export default function UmpireScoringPage({ params }: { params: Promise<{ matchI
           <TopBarRightActions />
         </div>
 
-        {/* Match Over Modals */}
-        {(currentGame.isGameOver || matchWinner) && (
-          <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center p-4 animate-in fade-in duration-300">
-            <div className="bg-surface border border-[#1B9C56]/30 p-8 rounded-3xl w-full max-w-sm text-center shadow-2xl">
+        {/* Match Over & Interval Modals */}
+        {(currentGame.isGameOver || matchWinner || currentGame.isIntervalBreak) && (
+          <div className="absolute inset-0 z-50 bg-black/60 backdrop-blur-md flex flex-col items-center justify-center p-4 animate-in fade-in duration-300">
+            <div className="bg-surface/90 border border-white/10 p-6 rounded-2xl w-full max-w-sm text-center shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-xl">
               {matchWinner ? (
                 <>
-                  <h2 className="text-3xl font-black mb-2 text-foreground">MATCH OVER</h2>
-                  <p className="text-xl font-bold text-[#1B9C56] mb-8">
-                    {matchWinner === 'A' ? config.teamA.join(' / ') : config.teamB.join(' / ')} Wins!
-                  </p>
-                  <button
-                    onClick={() => router.push('/')}
-                    className="w-full bg-[#1B9C56] text-black font-bold py-4 rounded-xl hover:opacity-90 active:scale-95 transition-transform"
-                  >
-                    Return to Dashboard
-                  </button>
+                  <div className="flex flex-col items-center gap-2 mb-4">
+                    <div className="w-14 h-14 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 mb-1 shadow-lg shadow-emerald-500/20">
+                      <Trophy className="w-8 h-8" />
+                    </div>
+                    <h2 className="text-2xl font-black text-white uppercase tracking-widest">Match Over</h2>
+                    <p className="text-sm font-extrabold text-[#1B9C56]">
+                      {matchWinner === 'A' ? (config.teamAName || config.teamA.join(' & ')) : (config.teamBName || config.teamB.join(' & '))} Wins!
+                    </p>
+                  </div>
+
+                  {/* Match Analytics Breakdown */}
+                  <div className="bg-background/80 border border-white/10 rounded-xl p-4 mb-6 text-left space-y-3">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                      <span className="text-[10px] font-black text-white/50 uppercase tracking-widest">Duration</span>
+                      <span className="text-xs font-bold text-white font-mono">{formatTime(elapsedSeconds)}</span>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] font-black text-white/50 uppercase tracking-widest block mb-1">Set Scores</span>
+                      {games.map((g, idx) => (
+                        <div key={idx} className="flex items-center justify-between text-xs font-bold py-1.5 px-2.5 rounded bg-white/5">
+                          <span className="text-white/70">Set {idx + 1}</span>
+                          <span className="text-white font-mono">
+                            <span className={g.winner === 'A' ? 'text-emerald-400 font-black' : 'text-white/80'}>{g.scoreA}</span>
+                            <span className="text-white/30 mx-1.5">-</span>
+                            <span className={g.winner === 'B' ? 'text-emerald-400 font-black' : 'text-white/80'}>{g.scoreB}</span>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2.5">
+                    <button
+                      onClick={() => router.push('/home')}
+                      className="w-full bg-gradient-to-r from-[#1B9C56] to-[#15803d] text-black font-black py-3 rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-lg text-xs uppercase tracking-widest flex items-center justify-center gap-2"
+                    >
+                      Back to Home Page
+                    </button>
+                    <button
+                      onClick={() => router.push('/home/matches')}
+                      className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 rounded-xl active:scale-95 transition-all text-xs uppercase tracking-wider"
+                    >
+                      Return to Matches List
+                    </button>
+                  </div>
                 </>
-              ) : (
+              ) : currentGame.isGameOver ? (
                 <>
-                  <h2 className="text-3xl font-black mb-2 text-foreground">SET OVER</h2>
-                  <p className="text-xl font-bold text-foreground/80 mb-4">
+                  <h2 className="text-2xl font-black mb-1 text-white uppercase tracking-widest">Set Over</h2>
+                  <p className="text-lg font-bold text-white/80 mb-4">
                     {currentGame.winner === 'A' ? config.teamA.join(' / ') : config.teamB.join(' / ')} wins Set {currentGameIndex + 1}
                   </p>
-                  <div className="mb-6 p-4 bg-foreground/5 rounded-2xl border border-foreground/10">
-                    <p className="text-sm text-foreground/60 font-semibold uppercase tracking-wider mb-1">Interval</p>
-                    <p className="text-4xl font-black text-[#1B9C56] font-mono">
+                  <div className="mb-5">
+                    <p className="text-xs text-white/50 font-bold uppercase tracking-widest mb-1">Break Time</p>
+                    <p className="text-3xl font-black text-[#1B9C56] font-mono">
                       {Math.floor(intervalSeconds / 60).toString().padStart(2, '0')}:{(intervalSeconds % 60).toString().padStart(2, '0')}
                     </p>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-3">
                     <button
                       onClick={store.undoPoint}
-                      className="flex-1 bg-foreground/10 text-foreground font-bold py-4 rounded-xl hover:bg-foreground/20 active:scale-95 transition-transform"
+                      className="flex-1 bg-white/5 text-white/70 font-bold py-3 rounded-xl hover:bg-white/10 active:scale-95 transition-all"
                     >
                       Undo
                     </button>
                     <button
-                      onClick={() => {
-                        store.nextGame();
-                        store.flipCourts();
-                      }}
-                      className="flex-[2] bg-[#1B9C56] text-black font-bold py-4 rounded-xl hover:opacity-90 active:scale-95 transition-transform"
+                      onClick={() => store.nextGame()}
+                      className="flex-[2] bg-gradient-to-r from-[#1B9C56] to-[#15803d] text-white font-black py-3 rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-lg"
                     >
                       Continue
                     </button>
                   </div>
                 </>
-              )}
+              ) : currentGame.isIntervalBreak ? (
+                <>
+                  <h2 className="text-2xl font-black mb-1 text-white uppercase tracking-widest">Interval</h2>
+                  <p className="text-sm font-bold text-white/60 mb-4">
+                    Players may wipe down & drink
+                  </p>
+                  <div className="mb-5">
+                    <p className="text-xs text-white/50 font-bold uppercase tracking-widest mb-1">Break Time</p>
+                    <p className="text-3xl font-black text-[#3B82F6] font-mono">
+                      {Math.floor(intervalSeconds / 60).toString().padStart(2, '0')}:{(intervalSeconds % 60).toString().padStart(2, '0')}
+                    </p>
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={store.undoPoint}
+                      className="flex-1 bg-white/5 text-white/70 font-bold py-3 rounded-xl hover:bg-white/10 active:scale-95 transition-all"
+                    >
+                      Undo
+                    </button>
+                    <button
+                      onClick={() => store.continueFromInterval()}
+                      className="flex-[2] bg-gradient-to-r from-[#3B82F6] to-[#2563eb] text-white font-black py-3 rounded-xl hover:opacity-90 active:scale-95 transition-all shadow-lg"
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </>
+              ) : null}
             </div>
           </div>
         )}

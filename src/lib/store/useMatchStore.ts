@@ -20,6 +20,11 @@ export interface MatchConfig {
   pointBreak: number; // resolved to a number, e.g. 21
   teamA: string[]; // 1 or 2 players
   teamB: string[]; // 1 or 2 players
+  teamAName?: string;
+  teamBName?: string;
+  tournamentName?: string;
+  courtName?: string;
+  sportType?: string;
 }
 
 export interface CourtPositions {
@@ -35,6 +40,18 @@ export interface GameState {
   posB: CourtPositions;
   isGameOver: boolean;
   winner: Team | null;
+  
+  // Advanced Tracking
+  continuousServicePointsA: number;
+  continuousServicePointsB: number;
+  maxContinuousPointsA: number;
+  maxContinuousPointsB: number;
+  lastRallyTimeMs: number;
+  totalRallyTimeMs: number;
+  
+  // BWF Interval Rule
+  isIntervalBreak: boolean;
+  hasTakenInterval: boolean;
 }
 
 export interface MatchState {
@@ -47,11 +64,12 @@ export interface MatchState {
 
   // Actions
   setupMatch: (config: MatchConfig) => void;
-  addPoint: (team: Team) => void;
+  addPoint: (team: Team, rallyTimeMs?: number) => void;
   undoPoint: () => void;
   nextGame: () => void;
   swapPlayers: (team: Team) => void;
   flipCourts: () => void;
+  continueFromInterval: () => void;
   resetMatch: () => void;
   setInitialServer: (team: Team) => void;
 }
@@ -64,6 +82,14 @@ const getInitialGameState = (isDoubles: boolean, server: Team = 'A'): GameState 
   posB: isDoubles ? { left: 1, right: 0 } : { left: null, right: 0 },
   isGameOver: false,
   winner: null,
+  continuousServicePointsA: 0,
+  continuousServicePointsB: 0,
+  maxContinuousPointsA: 0,
+  maxContinuousPointsB: 0,
+  lastRallyTimeMs: 0,
+  totalRallyTimeMs: 0,
+  isIntervalBreak: false,
+  hasTakenInterval: false,
 });
 
 export const useMatchStore = create<MatchState>((set, get) => ({
@@ -75,7 +101,7 @@ export const useMatchStore = create<MatchState>((set, get) => ({
   teamsFlipped: false,
 
   setupMatch: (config) => {
-    const isDoubles = config.category === 'Doubles' || config.category === 'Mixed Doubles';
+    const isDoubles = config.category?.includes('Doubles');
     set({
       config,
       currentGameIndex: 0,
@@ -86,11 +112,11 @@ export const useMatchStore = create<MatchState>((set, get) => ({
     });
   },
 
-  addPoint: (scoringTeam: Team) => {
+  addPoint: (scoringTeam: Team, rallyTimeMs?: number) => {
     const state = get();
     if (!state.config || state.matchWinner) return;
 
-    const isDoubles = state.config.category === 'Doubles' || state.config.category === 'Mixed Doubles';
+    const isDoubles = state.config.category?.includes('Doubles');
     const gameIndex = state.currentGameIndex;
     const currentGame = state.games[gameIndex];
     if (currentGame.isGameOver) return;
@@ -98,14 +124,7 @@ export const useMatchStore = create<MatchState>((set, get) => ({
     // Save state to history for undo
     const newHistory = [...state.history, { ...currentGame }];
 
-    // Optimistic API Call
-    if (state.config.id) {
-      ScoringService.recordEvent(state.config.id, state.config.category, {
-        team: scoringTeam,
-        action: 'POINT_SCORED',
-        timestamp: new Date().toISOString()
-      }).catch(err => console.error('Failed to record score event', err));
-    }
+    // Removed optimistic API call from here, moved to bottom
 
     const newScoreA = scoringTeam === 'A' ? currentGame.scoreA + 1 : currentGame.scoreA;
     const newScoreB = scoringTeam === 'B' ? currentGame.scoreB + 1 : currentGame.scoreB;
@@ -135,6 +154,12 @@ export const useMatchStore = create<MatchState>((set, get) => ({
       }
     }
 
+    let continuousServicePointsA = isServeWin && scoringTeam === 'A' ? currentGame.continuousServicePointsA + 1 : (scoringTeam === 'A' ? 1 : 0);
+    let continuousServicePointsB = isServeWin && scoringTeam === 'B' ? currentGame.continuousServicePointsB + 1 : (scoringTeam === 'B' ? 1 : 0);
+
+    let maxContinuousPointsA = Math.max(currentGame.maxContinuousPointsA, continuousServicePointsA);
+    let maxContinuousPointsB = Math.max(currentGame.maxContinuousPointsB, continuousServicePointsB);
+
     let isGameOver = false;
     let winner: Team | null = null;
     let matchWinner: Team | null = null;
@@ -149,6 +174,16 @@ export const useMatchStore = create<MatchState>((set, get) => ({
       isGameOver = true;
       winner = newScoreA > newScoreB ? 'A' : 'B';
     }
+    
+    // Interval Logic
+    let isIntervalBreak = currentGame.isIntervalBreak;
+    let hasTakenInterval = currentGame.hasTakenInterval;
+    const intervalPoint = ptBreak === 15 ? 8 : (ptBreak === 21 ? 11 : 15);
+    
+    if (!isGameOver && !hasTakenInterval && (newScoreA === intervalPoint || newScoreB === intervalPoint)) {
+      isIntervalBreak = true;
+      hasTakenInterval = true;
+    }
 
     const newGames = [...state.games];
     newGames[gameIndex] = {
@@ -159,6 +194,14 @@ export const useMatchStore = create<MatchState>((set, get) => ({
       posB: newPosB,
       isGameOver,
       winner,
+      continuousServicePointsA,
+      continuousServicePointsB,
+      maxContinuousPointsA,
+      maxContinuousPointsB,
+      lastRallyTimeMs: rallyTimeMs || 0,
+      totalRallyTimeMs: currentGame.totalRallyTimeMs + (rallyTimeMs || 0),
+      isIntervalBreak,
+      hasTakenInterval,
     };
 
     if (isGameOver) {
@@ -175,6 +218,18 @@ export const useMatchStore = create<MatchState>((set, get) => ({
       history: newHistory,
       matchWinner,
     });
+    
+    // API Call with Meta
+    if (state.config.id) {
+      const sportType = state.config.sportType || 'BADMINTON';
+      ScoringService.recordEvent(state.config.id, sportType, {
+        eventValue: scoringTeam,
+        eventType: 'POINT_SCORED',
+        eventTime: new Date().toISOString()
+      }).catch(() => {
+        // Silently ignore sync errors for now
+      });
+    }
   },
 
   undoPoint: () => {
@@ -188,20 +243,21 @@ export const useMatchStore = create<MatchState>((set, get) => ({
     const newGames = [...state.games];
     newGames[gameIndex] = previousGameState;
 
-    // Optimistic API Call
-    if (state.config && state.config.id) {
-      ScoringService.recordEvent(state.config.id, state.config.category, {
-        team: previousGameState.winner || 'A', // placeholder logic for undo team
-        action: 'POINT_REVERTED',
-        timestamp: new Date().toISOString()
-      }).catch(err => console.error('Failed to revert score event', err));
-    }
-
     set({
       games: newGames,
       history: newHistory,
       matchWinner: null,
     });
+
+    // Optimistic API Call
+    if (state.config && state.config.id) {
+      const sportType = state.config.sportType || 'BADMINTON';
+      ScoringService.recordEvent(state.config.id, sportType, {
+        eventValue: previousGameState.winner || 'A',
+        eventType: 'POINT_REVERTED',
+        eventTime: new Date().toISOString()
+      }).catch(err => console.error('Failed to revert score event', err));
+    }
   },
 
   nextGame: () => {
@@ -212,12 +268,36 @@ export const useMatchStore = create<MatchState>((set, get) => ({
     if (!currentGame.isGameOver) return;
 
     const nextServer = currentGame.winner || 'A';
-    const isDoubles = state.config.category === 'Doubles' || state.config.category === 'Mixed Doubles';
+    const isDoubles = state.config.category?.includes('Doubles');
 
     set({
       currentGameIndex: state.currentGameIndex + 1,
       games: [...state.games, getInitialGameState(isDoubles, nextServer)],
       history: [],
+      teamsFlipped: !state.teamsFlipped, // Swap courts automatically for next set
+    });
+  },
+
+  continueFromInterval: () => {
+    const state = get();
+    if (!state.config || state.matchWinner) return;
+
+    const gameIndex = state.currentGameIndex;
+    const currentGame = state.games[gameIndex];
+    if (currentGame.isGameOver || !currentGame.isIntervalBreak) return;
+
+    const newGames = [...state.games];
+    newGames[gameIndex] = {
+      ...currentGame,
+      isIntervalBreak: false,
+    };
+
+    // Swap courts if it's a 3-set match and this is the deciding (3rd) set interval
+    const isDecidingSet = state.config.bestOfSets === 3 && gameIndex === 2;
+
+    set({
+      games: newGames,
+      teamsFlipped: isDecidingSet ? !state.teamsFlipped : state.teamsFlipped,
     });
   },
 
@@ -283,9 +363,17 @@ if (typeof window !== 'undefined') {
   useMatchStore.subscribe((state) => {
     if (!state.config?.id) return;
     
-    // Fire and forget POST to sync state to overlay
-    ScoringService.syncState(state.config.id, state).catch(err => 
-      console.error('Failed to sync badminton/tennis overlay state', err)
-    );
+    const currentGame = state.games[state.currentGameIndex];
+    const payload = {
+      ...state,
+      teamAScore: currentGame ? String(currentGame.scoreA) : '0',
+      teamBScore: currentGame ? String(currentGame.scoreB) : '0',
+      isFinal: !!state.matchWinner
+    };
+
+    // Fire and forget POST to sync state to overlay & backend
+    ScoringService.syncState(state.config.id, payload).catch(() => {
+      // Silently ignore sync errors (e.g. for Team Event categories that don't have direct Match entities)
+    });
   });
 }

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname, useParams, useRouter } from 'next/navigation';
 import { 
   Home, Trophy, CalendarDays, Bell, User, LogOut, Menu, Settings, 
-  Activity, Users, Building, MapPin, Grid, BarChart3, CreditCard 
+  Activity, Users, Building, MapPin, Grid, BarChart3, CreditCard, Video 
 } from 'lucide-react';
 import { useAuthStore } from '@/lib/store/useAuthStore';
 import { useWorkspaceStore } from '@/lib/store/useWorkspaceStore';
@@ -22,6 +22,11 @@ export default function OrganizationLayout({ children }: { children: React.React
 
   const orgId = params?.orgId as string;
   const activeOrg = getActiveOrganization();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Sync route with store on load
   useEffect(() => {
@@ -54,6 +59,7 @@ export default function OrganizationLayout({ children }: { children: React.React
     };
   }, [isMenuOpen]);
 
+  if (!isMounted) return null;
   if (!activeOrg) return null;
 
   // Determine which nav links to show based on org type
@@ -65,6 +71,7 @@ export default function OrganizationLayout({ children }: { children: React.React
     if (activeOrg.type === 'ORGANIZER') {
       return [
         ...base,
+        { name: 'Live Stream', href: `/org/${orgId}/livestream`, icon: Video },
         { name: 'Tournaments', href: `/org/${orgId}/tournaments`, icon: Trophy },
         { name: 'Registrations', href: `/org/${orgId}/registrations`, icon: Users },
         { name: 'Results', href: `/org/${orgId}/results`, icon: Activity },
